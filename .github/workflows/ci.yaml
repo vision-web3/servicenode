@@ -9,7 +9,7 @@ on:
 
 jobs:
   shared:
-    uses: vision-io/ci-workflows/.github/workflows/python-ci.yml@v1
+    uses: vision-web3-foundation/ci-workflows/.github/workflows/python-ci.yml@v1
     secrets: inherit  
   docker-build:
     name: Build Docker images
