@@ -341,7 +341,7 @@ jobs:
           cat export/app.tar | docker import - visionio/service-node-app:local
           cat export/worker.tar | docker import - visionio/service-node-worker:local
 
-      - uses: vision-io/e2e-testing/.github/actions/run-tests@main
+      - uses: vision-web3-foundation/e2e-testing/.github/actions/run-tests@main
         with:
           servicenode-path: ${{ env.VISION_SERVICE_NODE }}
           servicenode-version: 'local'

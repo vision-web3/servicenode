@@ -63,7 +63,7 @@ jobs:
         id: buildx
 
       - name: Set up Poetry
-        uses: vision-io/ci-workflows/.github/actions/install-poetry@v1
+        uses: vision-web3-foundation/ci-workflows/.github/actions/install-poetry@v1
         with:
           python-version: ${{ matrix.python-version }}
           runner-os: 'ubuntu-latest'
