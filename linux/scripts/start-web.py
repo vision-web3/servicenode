@@ -6,16 +6,16 @@ import subprocess
 import sys
 from importlib import resources
 
-from pantos.servicenode.configuration import config
-from pantos.servicenode.configuration import load_config
+from vision.servicenode.configuration import config
+from vision.servicenode.configuration import load_config
 
 print('Loading the configuration...')
 load_config()
 print('Configuration loaded')
 
-USER_NAME = 'pantos-service-node'
-APP_DIRECTORY = '/opt/pantos/pantos-service-node'
-WSGI_FILE = str(resources.path('pantos.servicenode', 'wsgi.py'))
+USER_NAME = 'vision-service-node'
+APP_DIRECTORY = '/opt/vision/vision-service-node'
+WSGI_FILE = str(resources.path('vision.servicenode', 'wsgi.py'))
 NON_ROOT_DEFAULT_HTTPS_PORT = 8443
 NON_ROOT_DEFAULT_HTTP_PORT = 8080
 application_config = config['application']
@@ -75,7 +75,7 @@ if port < 1024:
 
 # build the port command (along with the ssl certificate info if requested)
 gunicorn_command = (f"python -m gunicorn --bind {host}:{port} --workers 1 "
-                    "pantos.servicenode.application:create_application()")
+                    "vision.servicenode.application:create_application()")
 if ssl_certificate:
     gunicorn_command += (
         f" --certfile {ssl_certificate} --keyfile {ssl_private_key} ")

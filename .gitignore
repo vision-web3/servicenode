@@ -13,7 +13,7 @@ dist/
 postgresql_data
 rabbitmq_data
 debian/.debhelper
-debian/pantos-service-node
+debian/vision-service-node
 debian/tmp
 debian/*debhelper*
 debian/files

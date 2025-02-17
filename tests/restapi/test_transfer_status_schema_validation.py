@@ -3,7 +3,7 @@ import uuid
 import marshmallow
 import pytest
 
-from pantos.servicenode.restapi import _TransferStatusSchema
+from vision.servicenode.restapi import _TransferStatusSchema
 
 
 def test_transfer_status_schema_correct(uuid_):

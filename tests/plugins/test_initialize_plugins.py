@@ -1,9 +1,9 @@
 import unittest.mock
 
 import pytest
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.plugins import initialize_plugins
+from vision.servicenode.plugins import initialize_plugins
 
 
 @pytest.fixture
@@ -14,7 +14,7 @@ def patched_execute_bid_plugin(mocker):
     _module = mocker.MagicMock(name="execute_bid_plugin_mock")
     _module.execute_bid_plugin = celery_mock
     mocker.patch.dict('sys.modules',
-                      {"pantos.servicenode.business.plugins": _module})
+                      {"vision.servicenode.business.plugins": _module})
 
     yield delay_mock
 
@@ -22,8 +22,8 @@ def patched_execute_bid_plugin(mocker):
 @pytest.mark.parametrize('start_worker', [True, False])
 @pytest.mark.parametrize('registered', [True, False])
 @pytest.mark.parametrize('active', [True, False])
-@unittest.mock.patch('pantos.servicenode.plugins.get_blockchain_config')
-@unittest.mock.patch('pantos.servicenode.plugins._import_bid_plugin')
+@unittest.mock.patch('vision.servicenode.plugins.get_blockchain_config')
+@unittest.mock.patch('vision.servicenode.plugins._import_bid_plugin')
 def test_initialize_plugins_correct(mocked_import_bid_plugin,
                                     mocked_get_blockchain_config,
                                     patched_execute_bid_plugin, active,

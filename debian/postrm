@@ -31,10 +31,10 @@ case "$1" in
                 db_purge
         fi
         echo "${DPKG_MAINTSCRIPT_PACKAGE}: Cleaning '${APP_ID:?INTERNAL ERROR - No APP_ID}' data..." >&2
-        [ -d /var/log/pantos/service-node ] && rm -rf /var/log/pantos/service-node
-        [ -d /opt/pantos/"$APP_ID" ] && rm -rf /opt/pantos/"$APP_ID"
+        [ -d /var/log/vision/service-node ] && rm -rf /var/log/vision/service-node
+        [ -d /opt/vision/"$APP_ID" ] && rm -rf /opt/vision/"$APP_ID"
         [ -f /etc/default/"$APP_ID" ] && rm -f /etc/default/"$APP_ID"
-        #[ -d /etc/pantos/service-node* ] && rm -rf /etc/pantos/service-node*
+        #[ -d /etc/vision/service-node* ] && rm -rf /etc/vision/service-node*
     ;;
 
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

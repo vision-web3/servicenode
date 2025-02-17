@@ -1,10 +1,10 @@
 import unittest.mock
 
 import pytest
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.blockchains.bnbchain import BnbChainClient
-from pantos.servicenode.blockchains.bnbchain import BnbChainClientError
+from vision.servicenode.blockchains.bnbchain import BnbChainClient
+from vision.servicenode.blockchains.bnbchain import BnbChainClientError
 
 
 @pytest.fixture(scope='module')

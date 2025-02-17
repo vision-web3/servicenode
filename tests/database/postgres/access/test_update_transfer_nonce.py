@@ -3,15 +3,15 @@ import unittest.mock
 import pytest
 import sqlalchemy
 import sqlalchemy.exc
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.database.access import update_transfer_nonce
-from pantos.servicenode.database.enums import TransferStatus
-from pantos.servicenode.database.models import Transfer
 from tests.database.conftest import populate_transfer_database
+from vision.servicenode.database.access import update_transfer_nonce
+from vision.servicenode.database.enums import TransferStatus
+from vision.servicenode.database.models import Transfer
 
 
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_nonce_empty_database_correct(mocked_get_session,
                                              postgres_db_session_maker,
                                              postgres_db_initialized_session):
@@ -40,7 +40,7 @@ def test_update_nonce_empty_database_correct(mocked_get_session,
     Blockchain.ETHEREUM, Blockchain.ETHEREUM, Blockchain.ETHEREUM,
     Blockchain.ETHEREUM, Blockchain.BNB_CHAIN, Blockchain.AVALANCHE
 ], [None, 2, 0, 1, 3, 7, 4, 6, 5])])
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_nonce_with_failed_nonces_created_first(
         mocked_get_session, postgres_db_session_maker,
         postgres_db_initialized_session, statuses, blockchain_ids, nonces):
@@ -70,7 +70,7 @@ def test_update_nonce_with_failed_nonces_created_first(
     Blockchain.ETHEREUM, Blockchain.ETHEREUM, Blockchain.ETHEREUM,
     Blockchain.ETHEREUM, Blockchain.BNB_CHAIN, Blockchain.AVALANCHE
 ], [2, 0, 1, 3, None, 7, 4, 6, 5])])
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_nonce_with_failed_nonces_created_in_the_middle(
         mocked_get_session, postgres_db_session_maker,
         postgres_db_initialized_session, statuses, blockchain_ids, nonces):
@@ -98,7 +98,7 @@ def test_update_nonce_with_failed_nonces_created_in_the_middle(
     Blockchain.ETHEREUM, Blockchain.ETHEREUM, Blockchain.ETHEREUM,
     Blockchain.AVALANCHE, Blockchain.ETHEREUM
 ], [0, 1, None, None, None])])
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_nonce_failed_transfers_with_empty_nonces(
         mocked_get_session, postgres_db_session_maker,
         postgres_db_initialized_session, statuses, blockchain_ids, nonces):
@@ -123,7 +123,7 @@ def test_update_nonce_failed_transfers_with_empty_nonces(
     Blockchain.ETHEREUM, Blockchain.ETHEREUM, Blockchain.ETHEREUM,
     Blockchain.BNB_CHAIN, Blockchain.AVALANCHE, Blockchain.ETHEREUM
 ], [2, 0, 1, 3, 7, 4, 6, 5, None])])
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_nonce_with_failed_nonces_created_last(
         mocked_get_session, postgres_db_session_maker,
         postgres_db_initialized_session, statuses, blockchain_ids, nonces):
@@ -152,7 +152,7 @@ def test_update_nonce_with_failed_nonces_created_last(
     Blockchain.ETHEREUM, Blockchain.ETHEREUM, Blockchain.ETHEREUM,
     Blockchain.AVALANCHE, Blockchain.ETHEREUM
 ], [0, 1, 2, 3, None])])
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_nonce_with_success_nonces_greater_nonce_received(
         mocked_get_session, postgres_db_session_maker,
         postgres_db_initialized_session, statuses, blockchain_ids, nonces):
@@ -175,7 +175,7 @@ def test_update_nonce_with_success_nonces_greater_nonce_received(
     Blockchain.ETHEREUM, Blockchain.ETHEREUM, Blockchain.ETHEREUM,
     Blockchain.AVALANCHE, Blockchain.ETHEREUM
 ], [0, 1, 2, 3, None])])
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_nonce_with_success_nonces_smaller_nonce_received(
         mocked_get_session, postgres_db_session_maker,
         postgres_db_initialized_session, statuses, blockchain_ids, nonces):
@@ -198,7 +198,7 @@ def test_update_nonce_with_success_nonces_smaller_nonce_received(
     Blockchain.ETHEREUM, Blockchain.ETHEREUM, Blockchain.ETHEREUM,
     Blockchain.AVALANCHE, Blockchain.ETHEREUM
 ], [0, 1, 2, 3, None])])
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_nonce_with_success_nonces_equal_nonce_received(
         mocked_get_session, postgres_db_session_maker,
         postgres_db_initialized_session, statuses, blockchain_ids, nonces):

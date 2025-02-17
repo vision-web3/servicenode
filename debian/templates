@@ -1,4 +1,4 @@
-Template: pantos/common/finish_note
+Template: vision/common/finish_note
 Type: note
 Description: |
   The configuration of the services has been completed.

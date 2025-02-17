@@ -1,3 +1,3 @@
 #! /bin/sh
 
-celery -A pantos.servicenode worker -l INFO -n pantos.servicenode -Q transfers,bids,transactions
+celery -A vision.servicenode worker -l INFO -n vision.servicenode -Q transfers,bids,transactions

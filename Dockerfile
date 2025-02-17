@@ -37,7 +37,7 @@ FROM bitnami/minideb:bookworm AS prod
 RUN apt-get update
 
 # Do not copy the configurator package
-COPY --from=dev /app/dist/pantos-service-node_*.deb .
+COPY --from=dev /app/dist/vision-service-node_*.deb .
 
 RUN ARCH=$(dpkg --print-architecture) && \
     PKGS=$(ls ./*-signed.deb 2>/dev/null || ls ./*.deb) && \
@@ -65,8 +65,8 @@ FROM prod AS servicenode
 
 ENV APP_PORT=8080
 
-ENTRYPOINT ["/usr/bin/pantos-service-node-server"]
+ENTRYPOINT ["/usr/bin/vision-service-node-server"]
 
 FROM prod AS servicenode-celery-worker
 
-ENTRYPOINT ["/usr/bin/pantos-service-node-celery"]
+ENTRYPOINT ["/usr/bin/vision-service-node-celery"]

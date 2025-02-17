@@ -2,8 +2,8 @@
 #
 # Helper to launch the celery worker
 
-APP_NAME=pantos-service-node
-APP_DIR=/opt/pantos/"$APP_NAME"
+APP_NAME=vision-service-node
+APP_DIR=/opt/vision/"$APP_NAME"
 export PYTHONHOME=$APP_DIR
 export PATH=$APP_DIR/bin:$PATH
 export PYTHONUNBUFFERED=1
@@ -34,7 +34,7 @@ while [ $# -gt 0 ]; do
       ;;
     -s|--status)
       echo "Querying the status of the celery worker"
-      ./bin/python -m celery -A pantos.servicenode report
+      ./bin/python -m celery -A vision.servicenode report
       status=$?
       if [ $status -ne 0 ]; then
         echo "Status: UNHEALTHY, exit code: $status"
@@ -56,12 +56,12 @@ if [ "$DEV_MODE" = "true" ]; then
     PROGRAM="./bin/watchmedo auto-restart --directory=$APP_DIR --pattern=*.py --recursive -- ./bin/python"
 fi
 
-if [ -n "$PANTOS_STATUS_MONITOR" ]; then
+if [ -n "$VISION_STATUS_MONITOR" ]; then
     echo "Starting the status monitor"
-    $PROGRAM -m celery -A pantos.servicenode flower &
+    $PROGRAM -m celery -A vision.servicenode flower &
 fi
 
-# Check if the current user is not "pantos-service-node" and if so, switch to that user
+# Check if the current user is not "vision-service-node" and if so, switch to that user
 # This can happen when started directly from the command line
 EXTRA_ARGS=""
 if [ "$(id -u)" -ne "$(id -u "$APP_NAME")" ]; then
@@ -71,10 +71,10 @@ fi
 
 while true; do
   echo "Starting the celery worker"
-  $PROGRAM -m celery -A pantos.servicenode worker $EXTRA_ARGS -l INFO -n pantos.servicenode -Q transfers,bids,transactions
+  $PROGRAM -m celery -A vision.servicenode worker $EXTRA_ARGS -l INFO -n vision.servicenode -Q transfers,bids,transactions
   PYTHON_EXIT_CODE=$?
 
-  if [ "$PANTOS_CELERY_AUTORESTART" != "true" ]; then
+  if [ "$VISION_CELERY_AUTORESTART" != "true" ]; then
     echo "Auto-restart is disabled. Exiting with code $PYTHON_EXIT_CODE."
     exit $PYTHON_EXIT_CODE
   fi

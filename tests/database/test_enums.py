@@ -1,7 +1,7 @@
 import pytest
-from pantos.common.entities import ServiceNodeTransferStatus
+from vision.common.entities import ServiceNodeTransferStatus
 
-from pantos.servicenode.database.enums import TransferStatus
+from vision.servicenode.database.enums import TransferStatus
 
 
 @pytest.mark.parametrize(

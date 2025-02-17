@@ -1,4 +1,4 @@
-# Environment file for pantos-service-node systemd units and cron jobs
+# Environment file for vision-service-node systemd units and cron jobs
 # Set a custom Config path
-# PANTOS_CONFIG=
-PANTOS_ENV_FILE=/etc/pantos/service-node-config.env
+# VISION_CONFIG=
+VISION_ENV_FILE=/etc/vision/service-node-config.env

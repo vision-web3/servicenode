@@ -10,17 +10,17 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      pantos-dependencies:
-        # All the pantos team libraries should be updated for patches
+      vision-dependencies:
+        # All the vision team libraries should be updated for patches
         patterns:
-          - "pantos-*"
+          - "vision-*"
         update-types:
           - "minor"
           - "patch"
       other-dependencies:
         # For other dependencies we only look for minor-major updates
         exclude-patterns:
-          - "pantos-*"
+          - "vision-*"
         update-types:
           - "minor"
           - "major"

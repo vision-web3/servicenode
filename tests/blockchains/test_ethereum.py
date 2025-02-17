@@ -7,22 +7,22 @@ import semantic_version  # type: ignore
 import web3
 import web3.datastructures
 from eth_account.account import Account
-from pantos.common.blockchains.base import NodeConnections
-from pantos.common.blockchains.base import TransactionNonceTooLowError
-from pantos.common.blockchains.base import TransactionUnderpricedError
-from pantos.common.blockchains.enums import Blockchain
-from pantos.common.blockchains.enums import ContractAbi
-from pantos.common.blockchains.ethereum import EthereumUtilitiesError
+from vision.common.blockchains.base import NodeConnections
+from vision.common.blockchains.base import TransactionNonceTooLowError
+from vision.common.blockchains.base import TransactionUnderpricedError
+from vision.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import ContractAbi
+from vision.common.blockchains.ethereum import EthereumUtilitiesError
 
-from pantos.servicenode.blockchains.base import BlockchainClient
-from pantos.servicenode.blockchains.base import InsufficientBalanceError
-from pantos.servicenode.blockchains.base import InvalidSignatureError
-from pantos.servicenode.blockchains.ethereum import EthereumClient
-from pantos.servicenode.blockchains.ethereum import EthereumClientError
+from vision.servicenode.blockchains.base import BlockchainClient
+from vision.servicenode.blockchains.base import InsufficientBalanceError
+from vision.servicenode.blockchains.base import InvalidSignatureError
+from vision.servicenode.blockchains.ethereum import EthereumClient
+from vision.servicenode.blockchains.ethereum import EthereumClientError
 
-_INVALID_SIGNATURE_ERROR = 'PantosForwarder: invalid signature'
+_INVALID_SIGNATURE_ERROR = 'VisionForwarder: invalid signature'
 
-_INSUFFICIENT_BALANCE_ERROR = 'PantosHub: insufficient balance of sender'
+_INSUFFICIENT_BALANCE_ERROR = 'VisionHub: insufficient balance of sender'
 
 _TRANSACTION_HASH = hexbytes.HexBytes(
     '0x53827743938a0344c56afdd1da6005a6182dd0c589db16c81ca99330cbdd6f59')
@@ -44,7 +44,7 @@ _SERVICE_NODE_ADDRESS = '0xbBCBd295CD5B36385F6c8EF7AD49bDf84A78DB97'
 
 _WITHDRAWAL_ADDRESS = '0xCe87D7e9c79Cca53C6d7Cb916FAd4e5b4F83b621'
 
-_SERVICE_NODE_URL = 'servicenode.pantos.testurl'
+_SERVICE_NODE_URL = 'servicenode.vision.testurl'
 
 _MINIMUM_DEPOSIT = 10**5 * 10**8
 
@@ -220,7 +220,7 @@ def node_connections(w3):
 @pytest.fixture
 def mock_get_blockchain_config():
     with unittest.mock.patch(
-            'pantos.servicenode.blockchains.base.'
+            'vision.servicenode.blockchains.base.'
             'get_blockchain_config') as mock_get_blockchain_config_:
         yield mock_get_blockchain_config_
 
@@ -228,7 +228,7 @@ def mock_get_blockchain_config():
 @pytest.fixture
 def mock_get_blockchain_utilities():
     with unittest.mock.patch(
-            'pantos.servicenode.blockchains.base.'
+            'vision.servicenode.blockchains.base.'
             'get_blockchain_utilities') as mock_get_blockchain_utilities_:
         yield mock_get_blockchain_utilities_
 
@@ -462,7 +462,7 @@ def test_register_node_correct(mock_get_commitment_wait_period,
         approve_request = mock_start_transaction_submission.call_args_list[
             0].args[0]
         assert approve_request.versioned_contract_abi.contract_abi is \
-            ContractAbi.PANTOS_TOKEN
+            ContractAbi.VISION_TOKEN
         assert approve_request.function_args == (hub_contract_address,
                                                  node_deposit)
 
@@ -474,7 +474,7 @@ def test_register_node_correct(mock_get_commitment_wait_period,
         register_request = mock_start_transaction_submission.call_args_list[
             node_deposit].args[0]
         assert register_request.versioned_contract_abi.contract_abi is \
-            ContractAbi.PANTOS_HUB
+            ContractAbi.VISION_HUB
         assert register_request.function_args == (service_node_address,
                                                   service_node_url,
                                                   node_deposit,
@@ -504,7 +504,7 @@ def test_unregister_node_correct(mock_start_transaction_submission,
     mock_start_transaction_submission.assert_called_once()
     unregister_request = mock_start_transaction_submission.call_args.args[0]
     assert unregister_request.versioned_contract_abi.contract_abi is \
-        ContractAbi.PANTOS_HUB
+        ContractAbi.VISION_HUB
     assert unregister_request.function_args == (service_node_address, )
 
 
@@ -537,7 +537,7 @@ def test_update_node_url_correct(mock_get_commitment_wait_period,
         mock_start_transaction_submission.assert_called_once()
         update_request = mock_start_transaction_submission.call_args.args[0]
         assert update_request.versioned_contract_abi.contract_abi is \
-            ContractAbi.PANTOS_HUB
+            ContractAbi.VISION_HUB
         assert update_request.function_args == (service_node_url, )
 
 
@@ -549,7 +549,7 @@ def test_update_node_url_error(mock_start_transaction_submission,
         ethereum_client.update_node_url(service_node_url)
 
 
-@unittest.mock.patch('pantos.servicenode.blockchains.ethereum.database_access')
+@unittest.mock.patch('vision.servicenode.blockchains.ethereum.database_access')
 @unittest.mock.patch.object(EthereumClient, '_create_hub_contract')
 def test_start_transfer_submission_correct(mock_create_hub_contract,
                                            mock_database_access,
@@ -585,7 +585,7 @@ def test_start_transfer_submission_correct(mock_create_hub_contract,
     mock_start_transaction_submission.assert_called_once()
 
 
-@unittest.mock.patch('pantos.servicenode.blockchains.ethereum.database_access')
+@unittest.mock.patch('vision.servicenode.blockchains.ethereum.database_access')
 @unittest.mock.patch.object(EthereumClient, '_create_hub_contract')
 def test_start_transfer_from_submission_correct(
         mock_create_hub_contract, mock_database_access, ethereum_client,
@@ -657,7 +657,7 @@ def test_start_transfer_from_submission_node_communication_error(
 @pytest.mark.parametrize(
     'transaction_error',
     [TransactionNonceTooLowError, TransactionUnderpricedError])
-@unittest.mock.patch('pantos.servicenode.blockchains.ethereum.database_access')
+@unittest.mock.patch('vision.servicenode.blockchains.ethereum.database_access')
 @unittest.mock.patch.object(EthereumClient, '_create_hub_contract')
 def test_start_transfer_submission_transaction_error(
         mock_create_hub_contract, mock_database_access, transaction_error,
@@ -687,7 +687,7 @@ def test_start_transfer_submission_transaction_error(
 @pytest.mark.parametrize(
     'transaction_error',
     [TransactionNonceTooLowError, TransactionUnderpricedError])
-@unittest.mock.patch('pantos.servicenode.blockchains.ethereum.database_access')
+@unittest.mock.patch('vision.servicenode.blockchains.ethereum.database_access')
 @unittest.mock.patch.object(EthereumClient, '_create_hub_contract')
 def test_start_transfer_from_submission_transaction_error(
         mock_create_hub_contract, mock_database_access, transaction_error,
@@ -838,7 +838,7 @@ def test_cancel_unregistration_correct(mock_start_transaction_submission,
     mock_start_transaction_submission.assert_called_once()
     cancel_request = mock_start_transaction_submission.call_args.args[0]
     assert cancel_request.versioned_contract_abi.contract_abi is \
-        ContractAbi.PANTOS_HUB
+        ContractAbi.VISION_HUB
     assert cancel_request.function_args == (service_node_address, )
 
 

@@ -4,20 +4,20 @@ import unittest.mock
 import pytest
 import sqlalchemy
 import sqlalchemy.exc
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.database.access import create_transfer
-from pantos.servicenode.database.enums import TransferStatus
-from pantos.servicenode.database.exceptions import SenderNonceNotUniqueError
-from pantos.servicenode.database.models import UNIQUE_SENDER_NONCE_CONSTRAINT
-from pantos.servicenode.database.models import Transfer
+from vision.servicenode.database.access import create_transfer
+from vision.servicenode.database.enums import TransferStatus
+from vision.servicenode.database.exceptions import SenderNonceNotUniqueError
+from vision.servicenode.database.models import UNIQUE_SENDER_NONCE_CONSTRAINT
+from vision.servicenode.database.models import Transfer
 
 
 @pytest.mark.parametrize('forwarder_contract_existent', [True, False])
 @pytest.mark.parametrize('hub_contract_existent', [True, False])
 @pytest.mark.parametrize('destination_token_contract_existent', [True, False])
 @pytest.mark.parametrize('source_token_contract_existent', [True, False])
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_create_transfer_correct(
         mock_get_session_maker, source_token_contract_existent,
         destination_token_contract_existent, hub_contract_existent,
@@ -72,7 +72,7 @@ def test_create_transfer_correct(
 @unittest.mock.patch(
     'sqlalchemy.orm.session.Session.begin_nested',
     side_effect=sqlalchemy.exc.IntegrityError('', None, Exception()))
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_create_transfer_race_conditions_correct(
         mock_get_session_maker, mock_begin_nested, db_initialized_session,
         embedded_db_session_maker, bid, source_token_contract,
@@ -94,7 +94,7 @@ def test_create_transfer_race_conditions_correct(
         None, hub_contract.id, None, forwarder_contract.id
     ]
 
-    with unittest.mock.patch('pantos.servicenode.database.access._read_id',
+    with unittest.mock.patch('vision.servicenode.database.access._read_id',
                              side_effect=read_id_return_values):
         internal_transfer_id = create_transfer(
             Blockchain(source_blockchain_id),
@@ -126,7 +126,7 @@ def test_create_transfer_race_conditions_correct(
                                     Exception()), SenderNonceNotUniqueError),
      (sqlalchemy.exc.IntegrityError(
          '', None, Exception()), sqlalchemy.exc.IntegrityError)])
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_create_transfer_error(mock_get_session_maker, error,
                                source_blockchain_id, destination_blockchain_id,
                                transfer_sender_address,

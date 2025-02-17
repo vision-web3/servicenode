@@ -2,10 +2,10 @@ import unittest.mock
 
 import sqlalchemy
 import sqlalchemy.exc
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.database.access import create_bid
-from pantos.servicenode.database.models import Bid
+from vision.servicenode.database.access import create_bid
+from vision.servicenode.database.models import Bid
 
 _SOURCE_BLOCKCHAIN_ID = 0
 
@@ -18,7 +18,7 @@ _FEE = 10**8
 _BID_VALID_UNTIL = 1000
 
 
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_create_bid_correct(mocked_session, db_initialized_session,
                             embedded_db_session_maker):
     mocked_session.return_value = embedded_db_session_maker

@@ -7,13 +7,13 @@ on:
 jobs:
   build:
     name: Build and attach .deb and .whl package
-    if: github.repository == 'pantos-io/servicenode'
+    if: github.repository == 'vision-io/servicenode'
     uses: ./.github/workflows/build.yml
     secrets: 'inherit'
 
   publish-docker:
     uses: ./.github/workflows/publish-docker.yaml
-    if: github.repository == 'pantos-io/servicenode'
+    if: github.repository == 'vision-io/servicenode'
     needs: build
     secrets: 'inherit'
     with:
@@ -23,4 +23,4 @@ jobs:
 
   test:
     needs: publish-docker
-    uses: pantos-io/e2e-testing/.github/workflows/ci.yaml@main
+    uses: vision-io/e2e-testing/.github/workflows/ci.yaml@main

@@ -1,29 +1,29 @@
-Template: pantos/service-node/create_signer_key
+Template: vision/service-node/create_signer_key
 Type: boolean
 Default: false
 Description: No signer key detected. Create a new signer key?
  You can always create your own signer key later following the gitbook instructions.
 
-Template: pantos/service-node/signer_key_password
+Template: vision/service-node/signer_key_password
 Type: password
 Description: Please provide the signer key password:
 
-Template: pantos/common/configure_postgresql
+Template: vision/common/configure_postgresql
 Type: boolean
 Default: true
 Description: Local PostgreSQL detected, configure? This will create a new database and user for the service unless previously configured.
 
-Template: pantos/common/configure_rabbitmq
+Template: vision/common/configure_rabbitmq
 Type: boolean
 Default: true
 Description: Local RabbitMQ detected, configure? This will create a new database and user for the service unless previously configured.
 
-Template: pantos/common/start_services
+Template: vision/common/start_services
 Type: boolean
 Default: true
 Description: Start the services after install?
 
-Template: pantos/configurator/finish_note
+Template: vision/configurator/finish_note
 Type: note
 Description: |
   The configuration of the services has been completed.

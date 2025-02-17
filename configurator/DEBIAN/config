@@ -12,7 +12,7 @@ RUN_AS="$APP_ID"
 POSTGRESQL_INSTALLED=$(dpkg-query -W --showformat='${Status}\n' postgresql | grep "install ok installed" || true)
 RABBITMQ_INSTALLED=$(dpkg-query -W --showformat='${Status}\n' rabbitmq-server | grep "install ok installed" || true)
 
-base_directory='/etc/pantos'
+base_directory='/etc/vision'
 env_file="${base_directory}/service-node-config.env"
 default_signer_key_file="${base_directory}/service-node-signer.pem"
 
@@ -21,34 +21,34 @@ if [ -f "${env_file}" ]; then
 fi
 
 if [ ! -f "${default_signer_key_file}" ] && [ -z "${SIGNER_KEY_PASSWORD}" ]; then
-    db_fset pantos/service-node/create_signer_key seen false
-    db_fset pantos/service-node/signer_key_password seen false
-    db_input high pantos/service-node/create_signer_key || true
-    db_get pantos/service-node/create_signer_key
+    db_fset vision/service-node/create_signer_key seen false
+    db_fset vision/service-node/signer_key_password seen false
+    db_input high vision/service-node/create_signer_key || true
+    db_get vision/service-node/create_signer_key
     db_go
     # Only ask for the password if the above is positive
     if [ "$RET" != "false" ]; then
-        db_input high pantos/service-node/signer_key_password || true
+        db_input high vision/service-node/signer_key_password || true
     fi
 fi
 
 if [ -n "${POSTGRESQL_INSTALLED}" ]; then
-    db_fset pantos/common/configure_postgresql seen false
-    db_input high pantos/common/configure_postgresql || true
+    db_fset vision/common/configure_postgresql seen false
+    db_input high vision/common/configure_postgresql || true
 fi
 
 if [ -n "${RABBITMQ_INSTALLED}" ]; then
-    db_fset pantos/common/configure_rabbitmq seen false
-    db_input high pantos/common/configure_rabbitmq || true
+    db_fset vision/common/configure_rabbitmq seen false
+    db_input high vision/common/configure_rabbitmq || true
 fi
 
 db_go
 
-db_get pantos/common/configure_postgresql
+db_get vision/common/configure_postgresql
 configure_postgresql=$RET
 
-db_get pantos/common/configure_rabbitmq
+db_get vision/common/configure_rabbitmq
 configure_rabbitmq=$RET
 
-db_input high pantos/common/start_services || true
+db_input high vision/common/start_services || true
 db_go

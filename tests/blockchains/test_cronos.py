@@ -1,10 +1,10 @@
 import unittest.mock
 
 import pytest
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.blockchains.cronos import CronosClient
-from pantos.servicenode.blockchains.cronos import CronosClientError
+from vision.servicenode.blockchains.cronos import CronosClient
+from vision.servicenode.blockchains.cronos import CronosClientError
 
 
 @pytest.fixture(scope='module')

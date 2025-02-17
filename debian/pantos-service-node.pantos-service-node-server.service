@@ -1,5 +1,5 @@
 [Unit]
-Description=Service Node web server reference implementation for the Pantos multi-blockchain system
+Description=Service Node web server reference implementation for the Vision multi-blockchain system
 After=network.target postgresql.service rabbitmq-server.service
 StartLimitIntervalSec=0
 
@@ -8,11 +8,11 @@ Type=simple
 Restart=always
 RestartSec=1
 KillMode=mixed
-WorkingDirectory=/opt/pantos/pantos-service-node
-EnvironmentFile=/etc/default/pantos-service-node
-ExecStart=/usr/bin/pantos-service-node-server
-StandardOutput=append:/var/log/pantos/service-node/server-service.log
-StandardError=append:/var/log/pantos/service-node/server-service.log
+WorkingDirectory=/opt/vision/vision-service-node
+EnvironmentFile=/etc/default/vision-service-node
+ExecStart=/usr/bin/vision-service-node-server
+StandardOutput=append:/var/log/vision/service-node/server-service.log
+StandardError=append:/var/log/vision/service-node/server-service.log
 
 [Install]
 WantedBy=multi-user.target

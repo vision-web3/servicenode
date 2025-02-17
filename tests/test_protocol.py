@@ -3,9 +3,9 @@ import unittest.mock
 import pytest
 import semantic_version  # type: ignore
 
-from pantos.servicenode.protocol import get_latest_protocol_version
-from pantos.servicenode.protocol import get_supported_protocol_versions
-from pantos.servicenode.protocol import is_supported_protocol_version
+from vision.servicenode.protocol import get_latest_protocol_version
+from vision.servicenode.protocol import get_supported_protocol_versions
+from vision.servicenode.protocol import is_supported_protocol_version
 
 
 def _to_semantic_version(version):
@@ -39,7 +39,7 @@ _LATEST_PROTOCOL_VERSION_LARGE = _to_semantic_version('2.0.10')
 def test_get_latest_protocol_version_correct(supported_protocol_versions,
                                              latest_protocol_version):
     with unittest.mock.patch(
-            'pantos.servicenode.protocol._SUPPORTED_PROTOCOL_VERSIONS',
+            'vision.servicenode.protocol._SUPPORTED_PROTOCOL_VERSIONS',
             supported_protocol_versions):
         assert get_latest_protocol_version() == latest_protocol_version
 
@@ -50,7 +50,7 @@ def test_get_latest_protocol_version_correct(supported_protocol_versions,
 ])
 def test_get_supported_protocol_versions_correct(supported_protocol_versions):
     with unittest.mock.patch(
-            'pantos.servicenode.protocol._SUPPORTED_PROTOCOL_VERSIONS',
+            'vision.servicenode.protocol._SUPPORTED_PROTOCOL_VERSIONS',
             supported_protocol_versions):
         assert get_supported_protocol_versions() == sorted(
             supported_protocol_versions)
@@ -67,7 +67,7 @@ def test_get_supported_protocol_versions_correct(supported_protocol_versions):
 def test_is_supported_protocol_version_correct(supported_protocol_versions,
                                                protocol_version, is_supported):
     with unittest.mock.patch(
-            'pantos.servicenode.protocol._SUPPORTED_PROTOCOL_VERSIONS',
+            'vision.servicenode.protocol._SUPPORTED_PROTOCOL_VERSIONS',
             supported_protocol_versions):
         assert is_supported_protocol_version(
             _to_semantic_version(protocol_version)) is is_supported

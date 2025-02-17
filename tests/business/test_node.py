@@ -2,15 +2,15 @@ import typing
 import unittest.mock
 
 import pytest
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.blockchains.base import BlockchainClientError
-from pantos.servicenode.business import node as node_module
-from pantos.servicenode.business.base import InvalidAmountError
-from pantos.servicenode.business.base import InvalidBlockchainAddressError
-from pantos.servicenode.business.base import InvalidUrlError
-from pantos.servicenode.business.node import NodeInteractor
-from pantos.servicenode.business.node import NodeInteractorError
+from vision.servicenode.blockchains.base import BlockchainClientError
+from vision.servicenode.business import node as node_module
+from vision.servicenode.business.base import InvalidAmountError
+from vision.servicenode.business.base import InvalidBlockchainAddressError
+from vision.servicenode.business.base import InvalidUrlError
+from vision.servicenode.business.node import NodeInteractor
+from vision.servicenode.business.node import NodeInteractorError
 
 _CONFIG_NODE_URL = 'https://config.node.url/'
 
@@ -339,8 +339,8 @@ def test_update_node_registrations_error(node_interactor):
         node_interactor.update_node_registrations()
 
 
-@unittest.mock.patch('pantos.servicenode.business.node.get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.node.get_blockchain_config')
+@unittest.mock.patch('vision.servicenode.business.node.get_blockchain_client')
+@unittest.mock.patch('vision.servicenode.business.node.get_blockchain_config')
 def test_update_node_registrations_inactive_blockchain_non_working_node(
         mocked_get_blockchain_config, mocked_get_blockchain_client,
         node_interactor):
