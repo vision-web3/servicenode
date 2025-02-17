@@ -4,7 +4,7 @@ title: "[Bug]: "
 labels: ["bug", "triage"]
 projects: ["vision-io/1"]
 assignees:
-  - vision-io/blockchain-backend
+  - vision-web3-foundation/blockchain-backend
 body:
   - type: markdown
     attributes:

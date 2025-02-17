@@ -47,7 +47,7 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          repository: vision-io/ethereum-contracts
+          repository: vision-web3-foundation/ethereum-contracts
           path: ethereum-contracts
           sparse-checkout: |
            Makefile
@@ -148,7 +148,7 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          repository: vision-io/ethereum-contracts
+          repository: vision-web3-foundation/ethereum-contracts
           path: ethereum-contracts
           sparse-checkout: |
            Makefile
