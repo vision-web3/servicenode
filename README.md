@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/vision-io/servicenode/img/vision-logo-full.svg" alt="Vision logo" align="right" width="120" />
 
-[![CI](https://github.com/vision-io/servicenode/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/vision-io/servicenode/actions/workflows/ci.yaml) 
+[![CI](https://github.com/vision-web3-foundation/servicenode/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/vision-io/servicenode/actions/workflows/ci.yaml) 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vision-io_servicenode&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vision-io_servicenode)
 
 
