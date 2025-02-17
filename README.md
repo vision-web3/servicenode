@@ -54,15 +54,15 @@ We provide Debian packages alongside every release, you can find them in the [re
 We have a PPA hosted on GitHub, which can be accessed as follows:
 
 ```bash
-curl -s --compressed "https://vision-io.github.io/servicenode/KEY.gpg" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/servicenode.gpg >/dev/null
-sudo curl -s --compressed -o /etc/apt/sources.list.d/vision-servicenode.list "https://vision-io.github.io/servicenode/vision-servicenode.list"
+curl -s --compressed "https://vision-web3-foundation.github.io/servicenode/KEY.gpg" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/servicenode.gpg >/dev/null
+sudo curl -s --compressed -o /etc/apt/sources.list.d/vision-servicenode.list "https://vision-web3-foundation.github.io/servicenode/vision-servicenode.list"
 sudo apt update
 sudo apt install vision-service-node
 ```
 
 #### Docker images
 
-We also distribute docker images in DockerHub with each release. These are made available under the visionio project as either [**app**](https://hub.docker.com/r/visionio/service-node-app) or [**worker**](https://hub.docker.com/r/visionio/service-node-worker).
+We also distribute docker images in DockerHub with each release. These are made available under the visionio project as either [**app**](https://hub.docker.com/r/visionweb3foundation/service-node-app) or [**worker**](https://hub.docker.com/r/visionweb3foundation/service-node-worker).
 
 ##### Local Setup
 
