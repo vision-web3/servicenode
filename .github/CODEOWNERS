@@ -1,3 +1,3 @@
-* @vision-io/blockchain-backend
-.github/workflows @vision-io/qa
-.github/CODEOWNERS @vision-io/management
+* @vision-web3-foundation/blockchain-backend
+.github/workflows @vision-web3-foundation/qa
+.github/CODEOWNERS @vision-web3-foundation/management
