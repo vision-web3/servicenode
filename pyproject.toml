@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vision-service-node"
-version = "3.0.0"
+version = "0.1.0"
 description = "Vision Service Node (reference implementation)"
 authors = ["Vision GmbH <contact@vision.io>"]
 license = "GPL-3.0-only"
