@@ -49,6 +49,8 @@ jobs:
         with:
           repository: vision-web3-foundation/ethereum-contracts
           path: ethereum-contracts
+          # !!!! Following line MUST be removed
+          token: ${GITHUB_TOKEN}
           sparse-checkout: |
            Makefile
            docker-compose.yml
