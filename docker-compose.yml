@@ -12,15 +12,15 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-    image: ${DOCKER_REGISTRY-visionio}/service-node-app:${DOCKER_TAG-local}
+    image: ${DOCKER_REGISTRY-visionweb3foundation}/service-node-app:${DOCKER_TAG-local}
     build:
       context: .
       dockerfile: Dockerfile
       target: servicenode
       x-bake:
         tags:
-          - ${DOCKER_REGISTRY-visionio}/service-node-app:${DOCKER_TAG-local}
-          - ${DOCKER_REGISTRY-visionio}/service-node-app:${EXTRA_TAG-local}
+          - ${DOCKER_REGISTRY-visionweb3foundation}/service-node-app:${DOCKER_TAG-local}
+          - ${DOCKER_REGISTRY-visionweb3foundation}/service-node-app:${EXTRA_TAG-local}
     networks:
       vision-service-node:
     env_file: []
@@ -91,15 +91,15 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-    image: ${DOCKER_REGISTRY-visionio}/service-node-worker:${DOCKER_TAG-local}
+    image: ${DOCKER_REGISTRY-visionweb3foundation}/service-node-worker:${DOCKER_TAG-local}
     build:
       context: .
       dockerfile: Dockerfile
       target: servicenode-celery-worker
       x-bake:
         tags:
-          - ${DOCKER_REGISTRY-visionio}/service-node-worker:${DOCKER_TAG-local}
-          - ${DOCKER_REGISTRY-visionio}/service-node-worker:${EXTRA_TAG-local}
+          - ${DOCKER_REGISTRY-visionweb3foundation}/service-node-worker:${DOCKER_TAG-local}
+          - ${DOCKER_REGISTRY-visionweb3foundation}/service-node-worker:${EXTRA_TAG-local}
     networks:
       vision-service-node:
     env_file: []
