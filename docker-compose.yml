@@ -52,7 +52,7 @@ services:
       watch:
         - action: sync
           path: ./vision
-          target: /opt/vision/vision-service-node/lib/python3.13/site-packages/vision
+          target: /opt/vision/vision-service-node/lib/python3/site-packages/vision
         - action: sync+restart
           path: ./linux/scripts/start-web.py
           target: /opt/vision/vision-service-node/bin/start-web.py
@@ -129,7 +129,7 @@ services:
       watch:
         - action: sync
           path: ./vision
-          target: /opt/vision/vision-service-node/lib/python3.13/site-packages/vision
+          target: /opt/vision/vision-service-node/lib/python3/site-packages/vision
         - action: sync+restart
           path: ./linux/scripts/vision-service-node-celery
           target: /opt/vision/vision-service-node/bin/vision-service-node-celery
