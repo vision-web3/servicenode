@@ -3,7 +3,7 @@ Section: contrib/python
 Priority: extra
 Maintainer: Vision GmbH <contact@vision.io>
 Standards-Version: 3.9.5
-Homepage: https://github.com/vision-io/servicenode
+Homepage: https://github.com/vision-web3-foundation/servicenode
 Package: vision-service-node-full
 Version: VERSION_PLACEHOLDER
 Architecture: all
