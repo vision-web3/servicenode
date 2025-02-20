@@ -2,7 +2,7 @@ name: Bug Report
 description: File a bug report
 title: "[Bug]: "
 labels: ["bug", "triage"]
-projects: ["vision-io/1"]
+projects: ["vision-web3-foundation/1"]
 assignees:
   - vision-web3-foundation/blockchain-backend
 body:

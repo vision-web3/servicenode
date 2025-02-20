@@ -49,7 +49,7 @@ There are two ways to install the apps using pre-built packages:
 
 #### Debian package distribution
 
-We provide Debian packages alongside every release, you can find them in the [releases tab](https://github.com/vision-io/servicenode/releases). Further information on how to use the service node packages can be found [here](https://vision.gitbook.io/technical-documentation/general/service-node).
+We provide Debian packages alongside every release, you can find them in the [releases tab](https://github.com/vision-web3-foundation/servicenode/releases). Further information on how to use the service node packages can be found [here](https://vision.gitbook.io/technical-documentation/general/service-node).
 
 We have a PPA hosted on GitHub, which can be accessed as follows:
 
