@@ -29,7 +29,7 @@ _TRANSACTION_HASH = hexbytes.HexBytes(
 
 _PROVIDER_TIMEOUT = 101
 
-_PAN_TOKEN_CONTRACT_ADDRESS = 'pan_token_contract_address'
+_VSN_TOKEN_CONTRACT_ADDRESS = 'vsn_token_contract_address'
 
 _HUB_CONTRACT_ADDRESS = 'hub_contract_address'
 
@@ -161,8 +161,8 @@ def provider_timeout():
 
 
 @pytest.fixture(scope='module')
-def pan_token_contract_address():
-    return _PAN_TOKEN_CONTRACT_ADDRESS
+def vsn_token_contract_address():
+    return _VSN_TOKEN_CONTRACT_ADDRESS
 
 
 @pytest.fixture(scope='module')

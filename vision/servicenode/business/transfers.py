@@ -192,7 +192,7 @@ class TransferInteractor(Interactor):
             The transferred token amount (in 10^-d units, where d is the
             token's number of decimals).
         fee : int
-            The fee in 10^-8 PAN a user has to pay for the token transfer.
+            The fee in 10^-8 VSN a user has to pay for the token transfer.
         sender_nonce : int
             The unique nonce of the sender for the token transfer on the
             source blockchain.
@@ -432,7 +432,7 @@ class TransferInteractor(Interactor):
         Parameters
         ----------
         fee : int
-            The fee in 10^-8 PAN a user has to pay for the token transfer.
+            The fee in 10^-8 VSN a user has to pay for the token transfer.
         bid_valid_until : int
             The timestamp until when the bid is valid (in seconds since
             the epoch).
@@ -879,7 +879,7 @@ def execute_transfer_task(self, internal_transfer_id: int,
         The transferred token amount (in 10^-d units, where d is the
         token's number of decimals).
     fee : int
-        The fee in 10^-8 PAN a user has to pay for the token transfer.
+        The fee in 10^-8 VSN a user has to pay for the token transfer.
     sender_nonce : int
         The unique nonce of the sender for the token transfer on the
         source blockchain.

@@ -46,7 +46,7 @@ class NodeInteractor(Interactor):
         InvalidAmountError
             If the configured service node deposit is less than the
             Vision Hub's minimum service node deposit or greater than
-            the service node's own PAN token balance.
+            the service node's own VSN token balance.
         InvalidBlockchainAddressError
             If the configured withdrawal address is invalid.
         NodeInteractorError
@@ -103,11 +103,11 @@ class NodeInteractor(Interactor):
     def __validate_node_deposit(self, blockchain_client: BlockchainClient,
                                 node_deposit: int) -> None:
         minimum_deposit = blockchain_client.read_minimum_deposit()
-        own_pan_balance = blockchain_client.read_own_pan_balance()
-        if node_deposit < minimum_deposit or node_deposit > own_pan_balance:
+        own_vsn_balance = blockchain_client.read_own_vsn_balance()
+        if node_deposit < minimum_deposit or node_deposit > own_vsn_balance:
             raise self._create_invalid_amount_error(
                 node_deposit=node_deposit, minimum_deposit=minimum_deposit,
-                own_pan_balance=own_pan_balance)
+                own_vsn_balance=own_vsn_balance)
 
     def __validate_node_url(self, node_url: str) -> None:
         try:

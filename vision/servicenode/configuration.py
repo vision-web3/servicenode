@@ -77,7 +77,7 @@ _VALIDATION_SCHEMA_BLOCKCHAIN = {
             'type': 'string',
             'required': True
         },
-        'pan_token': {
+        'vsn_token': {
             'type': 'string',
             'required': True
         },

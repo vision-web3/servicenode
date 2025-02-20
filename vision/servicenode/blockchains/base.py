@@ -306,28 +306,28 @@ class BlockchainClient(BlockchainHandler, ErrorCreator[BlockchainClientError]):
         """
         pass  # pragma: no cover
 
-    def read_own_pan_balance(self) -> int:
-        """Read the service node's own PAN token balance on the
+    def read_own_vsn_balance(self) -> int:
+        """Read the service node's own VSN token balance on the
         blockchain.
 
         Returns
         -------
         int
-            The service node's own PAN token balance.
+            The service node's own VSN token balance.
 
         Raises
         ------
         BlockchainClientError
-            If the service node's own PAN token balance cannot be read.
+            If the service node's own VSN token balance cannot be read.
 
         """
         try:
             return self._get_utilities().get_balance(
                 self.get_own_address(),
-                token_address=self._get_config()['pan_token'])
+                token_address=self._get_config()['vsn_token'])
         except Exception:
             raise self._create_error(
-                'unable to read the own PAN token balance')
+                'unable to read the own VSN token balance')
 
     @abc.abstractmethod
     def register_node(self, node_url: str, node_deposit: int,
@@ -372,7 +372,7 @@ class BlockchainClient(BlockchainHandler, ErrorCreator[BlockchainClientError]):
             The transferred token amount (in 10^-d units, where d is the
             token's number of decimals).
         fee : int
-            The fee in 10^-8 PAN a user has to pay for the token
+            The fee in 10^-8 VSN a user has to pay for the token
             transfer.
         sender_nonce : int
             The unique nonce of the sender for the token transfer.
@@ -447,7 +447,7 @@ class BlockchainClient(BlockchainHandler, ErrorCreator[BlockchainClientError]):
             The transferred token amount (in 10^-d units, where d is the
             token's number of decimals).
         fee : int
-            The fee in 10^-8 PAN a user has to pay for the token
+            The fee in 10^-8 VSN a user has to pay for the token
             transfer.
         sender_nonce : int
             The unique nonce of the sender for the token transfer on the
@@ -823,7 +823,7 @@ class BlockchainClient(BlockchainHandler, ErrorCreator[BlockchainClientError]):
         if contract_abi is ContractAbi.VISION_HUB:
             contract_address = self._get_config()['hub']
         elif contract_abi is ContractAbi.VISION_TOKEN:
-            contract_address = self._get_config()['pan_token']
+            contract_address = self._get_config()['vsn_token']
         else:
             raise NotImplementedError
         min_adaptable_fee_per_gas = \
@@ -897,7 +897,7 @@ class BlockchainClient(BlockchainHandler, ErrorCreator[BlockchainClientError]):
         if contract_abi is ContractAbi.VISION_HUB:
             contract_address = self._get_config()['hub']
         elif contract_abi is ContractAbi.VISION_TOKEN:
-            contract_address = self._get_config()['pan_token']
+            contract_address = self._get_config()['vsn_token']
         else:
             raise NotImplementedError
         min_adaptable_fee_per_gas = \

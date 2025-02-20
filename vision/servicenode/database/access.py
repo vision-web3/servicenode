@@ -48,7 +48,7 @@ def create_bid(source_blockchain: Blockchain,
     valid_until: int
         The maximum time until which the bid is valid (in seconds).
     fee : int
-        The fee for a transfer (in PAN).
+        The fee for a transfer (in VSN).
 
     """
     assert execution_time > 0
@@ -114,7 +114,7 @@ def create_transfer(source_blockchain: Blockchain,
     amount : int
         The amount of tokens sent by the sender to the recipient.
     fee : int
-        The fee for the transfer (in PAN) payed by the sender.
+        The fee for the transfer (in VSN) payed by the sender.
     sender_nonce : int
         The nonce of the sender at the Vision Forwarder contract of the
         source blockchain.
