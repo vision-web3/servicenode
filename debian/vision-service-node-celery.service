@@ -1,0 +1,21 @@
+[Unit]
+Description=Service Node celery worker reference implementation for the Vision multi-blockchain system
+After=network.target postgresql.service rabbitmq-server.service vision-service-node-server.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+KillMode=mixed
+TimeoutStopSec=600
+User=vision-service-node
+Group=daemon
+WorkingDirectory=/opt/vision/vision-service-node
+EnvironmentFile=/etc/default/vision-service-node
+ExecStart=/usr/bin/vision-service-node-celery
+StandardOutput=append:/var/log/vision/service-node/worker-service.log
+StandardError=append:/var/log/vision/service-node/worker-service.log
+
+[Install]
+WantedBy=multi-user.target

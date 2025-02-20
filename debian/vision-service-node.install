@@ -1,0 +1,7 @@
+#!/usr/bin/dh-exec
+service-node-config.yml opt/vision/vision-service-node
+bids.yml => etc/vision/service-node-bids.yml
+alembic.ini opt/vision/vision-service-node
+service-node-config.env etc/vision
+linux/etc/default/* etc/default
+linux/scripts/* opt/vision/vision-service-node/bin

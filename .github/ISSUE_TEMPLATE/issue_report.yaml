@@ -2,9 +2,9 @@ name: Bug Report
 description: File a bug report
 title: "[Bug]: "
 labels: ["bug", "triage"]
-projects: ["pantos-io/1"]
+projects: ["vision-io/1"]
 assignees:
-  - pantos-io/blockchain-backend
+  - vision-web3-foundation/blockchain-backend
 body:
   - type: markdown
     attributes:

@@ -3,22 +3,22 @@ import unittest.mock
 import pytest
 import sqlalchemy  # type: ignore
 import sqlalchemy.exc  # type: ignore
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.database import get_session
-from pantos.servicenode.database import get_session_maker
-from pantos.servicenode.database import initialize_package
-from pantos.servicenode.database.enums import TransferStatus
-from pantos.servicenode.database.exceptions import DatabaseError
-from pantos.servicenode.database.models import Blockchain as Blockchain_
-from pantos.servicenode.database.models import \
+from vision.servicenode.database import get_session
+from vision.servicenode.database import get_session_maker
+from vision.servicenode.database import initialize_package
+from vision.servicenode.database.enums import TransferStatus
+from vision.servicenode.database.exceptions import DatabaseError
+from vision.servicenode.database.models import Blockchain as Blockchain_
+from vision.servicenode.database.models import \
     TransferStatus as TransferStatus_
 
 
 @pytest.mark.parametrize('is_flask_app', [True, False])
-@unittest.mock.patch('pantos.servicenode.database.Blockchain', Blockchain)
-@unittest.mock.patch('pantos.servicenode.database.config')
-@unittest.mock.patch('pantos.servicenode.database.sqlalchemy.create_engine')
+@unittest.mock.patch('vision.servicenode.database.Blockchain', Blockchain)
+@unittest.mock.patch('vision.servicenode.database.config')
+@unittest.mock.patch('vision.servicenode.database.sqlalchemy.create_engine')
 def test_initialize_package_blockchain_correct(mocked_create_engine,
                                                mocked_config, is_flask_app,
                                                embedded_db_engine,
@@ -50,10 +50,10 @@ def test_initialize_package_blockchain_correct(mocked_create_engine,
 
 
 @pytest.mark.parametrize('is_flask_app', [True, False])
-@unittest.mock.patch('pantos.servicenode.database.TransferStatus',
+@unittest.mock.patch('vision.servicenode.database.TransferStatus',
                      TransferStatus)
-@unittest.mock.patch('pantos.servicenode.database.config')
-@unittest.mock.patch('pantos.servicenode.database.sqlalchemy.create_engine')
+@unittest.mock.patch('vision.servicenode.database.config')
+@unittest.mock.patch('vision.servicenode.database.sqlalchemy.create_engine')
 def test_initialize_package_transfer_status_correct(mocked_create_engine,
                                                     mocked_config,
                                                     is_flask_app,
@@ -89,14 +89,14 @@ def test_initialize_package_transfer_status_correct(mocked_create_engine,
             assert transfer_status.name == transfer_status_in_db[0].name
 
 
-@unittest.mock.patch('pantos.servicenode.database._session_maker', 'session')
+@unittest.mock.patch('vision.servicenode.database._session_maker', 'session')
 def test_get_session_maker_correct():
     session = get_session_maker()
 
     assert session == 'session'
 
 
-@unittest.mock.patch('pantos.servicenode.database.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.get_session_maker')
 def test_get_session_correct(mocked_get_session_maker):
     mocked_get_session_maker().return_value = 'session'
 
@@ -105,7 +105,7 @@ def test_get_session_correct(mocked_get_session_maker):
     assert session == 'session'
 
 
-@unittest.mock.patch('pantos.servicenode.database._session_maker', None)
+@unittest.mock.patch('vision.servicenode.database._session_maker', None)
 def test_get_session_maker_database_error():
     with pytest.raises(DatabaseError):
         get_session_maker()

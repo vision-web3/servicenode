@@ -1,20 +1,20 @@
-"""Shared fixtures for all pantos.servicenode.database package tests.
+"""Shared fixtures for all vision.servicenode.database package tests.
 
 """
 import pytest
 import sqlalchemy  # type: ignore
 import sqlalchemy.orm  # type: ignore
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.database.enums import TransferStatus
-from pantos.servicenode.database.models import Base
-from pantos.servicenode.database.models import Bid
-from pantos.servicenode.database.models import Blockchain as Blockchain_
-from pantos.servicenode.database.models import ForwarderContract
-from pantos.servicenode.database.models import HubContract
-from pantos.servicenode.database.models import TokenContract
-from pantos.servicenode.database.models import Transfer
-from pantos.servicenode.database.models import \
+from vision.servicenode.database.enums import TransferStatus
+from vision.servicenode.database.models import Base
+from vision.servicenode.database.models import Bid
+from vision.servicenode.database.models import Blockchain as Blockchain_
+from vision.servicenode.database.models import ForwarderContract
+from vision.servicenode.database.models import HubContract
+from vision.servicenode.database.models import TokenContract
+from vision.servicenode.database.models import Transfer
+from vision.servicenode.database.models import \
     TransferStatus as TransferStatus_
 
 
@@ -136,8 +136,8 @@ def postgres_db_engine():
 
     """
     sql_engine = sqlalchemy.create_engine(
-        'postgresql+psycopg://pantos-service-node:kP13yU9f@localhost/'
-        'pantos-service-node-test')
+        'postgresql+psycopg://vision-service-node:kP13yU9f@localhost/'
+        'vision-service-node-test')
     return sql_engine
 
 

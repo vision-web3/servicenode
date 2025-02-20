@@ -1,0 +1,2 @@
+opt/vision/vision-service-node/bin/vision-service-node-server usr/bin/vision-service-node-server
+opt/vision/vision-service-node/bin/vision-service-node-celery usr/bin/vision-service-node-celery

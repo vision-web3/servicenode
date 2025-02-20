@@ -1,6 +1,6 @@
 import pytest
 
-from pantos.servicenode.protocol import get_supported_protocol_versions
+from vision.servicenode.protocol import get_supported_protocol_versions
 
 COMMITMENT_WAIT_PERIOD = 10
 

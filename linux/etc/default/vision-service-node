@@ -1,0 +1,4 @@
+# Environment file for vision-service-node systemd units and cron jobs
+# Set a custom Config path
+# VISION_CONFIG=
+VISION_ENV_FILE=/etc/vision/service-node-config.env

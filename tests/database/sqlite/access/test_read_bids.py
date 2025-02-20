@@ -1,9 +1,9 @@
 import unittest.mock
 
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.database.access import create_bid
-from pantos.servicenode.database.access import read_bids
+from vision.servicenode.database.access import create_bid
+from vision.servicenode.database.access import read_bids
 
 _SOURCE_BLOCKCHAIN_ID = 0
 
@@ -18,8 +18,8 @@ _DOUBLE_FEE = 10**8 * 2
 _BID_VALID_UNTIL = 1000
 
 
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
-@unittest.mock.patch('pantos.servicenode.database.access.get_session')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session')
 def test_read_bids_correct(mocked_session, mocked_session_maker,
                            db_initialized_session, embedded_db_session_maker):
     mocked_session.side_effect = embedded_db_session_maker
@@ -42,8 +42,8 @@ def test_read_bids_correct(mocked_session, mocked_session_maker,
     assert bids[1].execution_time == _EXECUTION_TIME * 2
 
 
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
-@unittest.mock.patch('pantos.servicenode.database.access.get_session')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session')
 def test_read_bids_non_existent_correct(mocked_session, mocked_session_maker,
                                         db_initialized_session,
                                         embedded_db_session_maker):

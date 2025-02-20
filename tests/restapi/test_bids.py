@@ -3,8 +3,8 @@ import unittest.mock
 
 import pytest
 
-from pantos.servicenode.restapi import BidInteractor
-from pantos.servicenode.restapi import _BidsSchema
+from vision.servicenode.restapi import BidInteractor
+from vision.servicenode.restapi import _BidsSchema
 
 
 def test_bids_correct(bids, test_client):
@@ -63,7 +63,7 @@ def test_bids_incorrect_blockchain_id(query_param, expected_code,
     assert json.loads(response.text)['message'] == expected_response
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.internal_server_error')
+@unittest.mock.patch('vision.servicenode.restapi.internal_server_error')
 @unittest.mock.patch.object(_BidsSchema, 'load', side_effect=Exception)
 def test_transfer_exception(mocked_load, mocked_internal_server_error,
                             test_client):

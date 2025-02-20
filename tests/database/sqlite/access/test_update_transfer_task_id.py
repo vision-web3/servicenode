@@ -3,11 +3,11 @@ import uuid
 
 import pytest
 
-from pantos.servicenode.database.access import update_transfer_task_id
-from pantos.servicenode.database.exceptions import DatabaseError
+from vision.servicenode.database.access import update_transfer_task_id
+from vision.servicenode.database.exceptions import DatabaseError
 
 
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_transfer_task_id_correct(mocked_session,
                                          db_initialized_session,
                                          embedded_db_session_maker, uuid_,
@@ -23,7 +23,7 @@ def test_update_transfer_task_id_correct(mocked_session,
     assert transfer.task_id == str(new_task_id)
 
 
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_transfer_task_id_unknown_database_error(
         mocked_session, embedded_db_session_maker, uuid_, transfer,
         on_chain_transfer_id):

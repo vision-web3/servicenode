@@ -4,7 +4,7 @@
 # see: dh_installdeb(1)
 
 set -e
-venv_dir='/opt/pantos/pantos-service-node'
+venv_dir='/opt/vision/vision-service-node'
 
 # summary of how this script can be called:
 #        * <new-preinst> `install'

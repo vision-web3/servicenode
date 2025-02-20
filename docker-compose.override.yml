@@ -1,22 +1,22 @@
 networks:
-  pantos-service-node:
-  pantos-ethereum:
-    name: pantos-ethereum-${STACK_IDENTIFIER}-${ETHEREUM_NETWORK-1}
+  vision-service-node:
+  vision-ethereum:
+    name: vision-ethereum-${STACK_IDENTIFIER}-${ETHEREUM_NETWORK-1}
     external: true
 
 services:
   app:
     networks:
-      pantos-service-node:
-      pantos-ethereum:
-    entrypoint: sh -c 'set -a; . /etc/pantos/eth-data/ETHEREUM.env && . /etc/pantos/bnb-data/BNB_CHAIN.env; set +a; exec /usr/bin/pantos-service-node-server'
+      vision-service-node:
+      vision-ethereum:
+    entrypoint: sh -c 'set -a; . /etc/vision/eth-data/ETHEREUM.env && . /etc/vision/bnb-data/BNB_CHAIN.env; set +a; exec /usr/bin/vision-service-node-server'
     environment:
-      PANTOS_ENV_FILE: /etc/pantos/service-node-config.env
+      VISION_ENV_FILE: /etc/vision/service-node-config.env
       APP_URL: http://localhost:808${INSTANCE-1}
-      BNB_CHAIN_PRIVATE_KEY: /etc/pantos/bnb-data/keystore
-      ETHEREUM_PRIVATE_KEY: /etc/pantos/eth-data/keystore
+      BNB_CHAIN_PRIVATE_KEY: /etc/vision/bnb-data/keystore
+      ETHEREUM_PRIVATE_KEY: /etc/vision/eth-data/keystore
     healthcheck:
-      test: ["CMD-SHELL", "set -a; . /etc/pantos/eth-data/ETHEREUM.env && . /etc/pantos/bnb-data/BNB_CHAIN.env; set +a; exec /usr/bin/pantos-service-node-server --status"]
+      test: ["CMD-SHELL", "set -a; . /etc/vision/eth-data/ETHEREUM.env && . /etc/vision/bnb-data/BNB_CHAIN.env; set +a; exec /usr/bin/vision-service-node-server --status"]
       interval: 5s
       timeout: 10s
       retries: 3
@@ -24,19 +24,19 @@ services:
     volumes:
       - type: volume
         source: bnb-data
-        target: /etc/pantos/bnb-data
+        target: /etc/vision/bnb-data
         read_only: true
       - type: volume
         source: eth-data
-        target: /etc/pantos/eth-data
+        target: /etc/vision/eth-data
         read_only: true
       - type: bind
         source: ./signer_key.pem
-        target: /etc/pantos/service-node-signer.pem
+        target: /etc/vision/service-node-signer.pem
         read_only: true
       - type: bind
         source: ./service-node-config.docker.env
-        target: /etc/pantos/service-node-config.env
+        target: /etc/vision/service-node-config.env
         read_only: true
     develop:
       watch:
@@ -46,17 +46,17 @@ services:
 
   worker:
     networks:
-      pantos-service-node:
-      pantos-ethereum:
-    entrypoint: sh -c 'set -a; . /etc/pantos/eth-data/ETHEREUM.env && . /etc/pantos/bnb-data/BNB_CHAIN.env; set +a; exec /usr/bin/pantos-service-node-celery'
+      vision-service-node:
+      vision-ethereum:
+    entrypoint: sh -c 'set -a; . /etc/vision/eth-data/ETHEREUM.env && . /etc/vision/bnb-data/BNB_CHAIN.env; set +a; exec /usr/bin/vision-service-node-celery'
     environment:
-      PANTOS_ENV_FILE: /etc/pantos/service-node-config.env
+      VISION_ENV_FILE: /etc/vision/service-node-config.env
       APP_URL: http://localhost:808${INSTANCE-1}
-      BNB_CHAIN_PRIVATE_KEY: /etc/pantos/bnb-data/keystore
-      ETHEREUM_PRIVATE_KEY: /etc/pantos/eth-data/keystore
-      PANTOS_STATUS_MONITOR: 1
+      BNB_CHAIN_PRIVATE_KEY: /etc/vision/bnb-data/keystore
+      ETHEREUM_PRIVATE_KEY: /etc/vision/eth-data/keystore
+      VISION_STATUS_MONITOR: 1
     healthcheck:
-      test: ["CMD-SHELL", "set -a; . /etc/pantos/eth-data/ETHEREUM.env && . /etc/pantos/bnb-data/BNB_CHAIN.env; set +a; exec /usr/bin/pantos-service-node-celery --status"]
+      test: ["CMD-SHELL", "set -a; . /etc/vision/eth-data/ETHEREUM.env && . /etc/vision/bnb-data/BNB_CHAIN.env; set +a; exec /usr/bin/vision-service-node-celery --status"]
       interval: 5s
       timeout: 10s
       retries: 3
@@ -66,19 +66,19 @@ services:
     volumes:
       - type: volume
         source: bnb-data
-        target: /etc/pantos/bnb-data
+        target: /etc/vision/bnb-data
         read_only: true
       - type: volume
         source: eth-data
-        target: /etc/pantos/eth-data
+        target: /etc/vision/eth-data
         read_only: true
       - type: bind
         source: ./signer_key.pem
-        target: /etc/pantos/service-node-signer.pem
+        target: /etc/vision/service-node-signer.pem
         read_only: true
       - type: bind
         source: ./service-node-config.docker.env
-        target: /etc/pantos/service-node-config.env
+        target: /etc/vision/service-node-config.env
         read_only: true
     develop:
       watch:

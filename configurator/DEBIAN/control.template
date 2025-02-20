@@ -1,12 +1,12 @@
-Source: pantos-service-node-full
+Source: vision-service-node-full
 Section: contrib/python
 Priority: extra
-Maintainer: Pantos GmbH <contact@pantos.io>
+Maintainer: Vision GmbH <contact@vision.io>
 Standards-Version: 3.9.5
-Homepage: https://github.com/pantos-io/servicenode
-Package: pantos-service-node-full
+Homepage: https://github.com/vision-io/servicenode
+Package: vision-service-node-full
 Version: VERSION_PLACEHOLDER
 Architecture: all
 Pre-Depends: debhelper (>=10), dpkg (>= 1.16.1)
-Depends: pantos-service-node, postgresql, rabbitmq-server, openssh-client
-Description: Configurator package for the Service Node reference implementation for the Pantos multi-blockchain system.
+Depends: vision-service-node, postgresql, rabbitmq-server, openssh-client
+Description: Configurator package for the Service Node reference implementation for the Vision multi-blockchain system.

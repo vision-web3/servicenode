@@ -2,17 +2,17 @@ import unittest.mock
 
 import marshmallow
 import pytest
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.restapi import _TransferSchema
+from vision.servicenode.restapi import _TransferSchema
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_config',
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_config',
                      return_value={
                          'active': True,
                          'registered': True
                      })
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_client')
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_client')
 def test_transfer_schema_correct(mocked_blockchain_client,
                                  mocked_get_blockchain_config,
                                  source_blockchain, destination_blockchain,
@@ -59,7 +59,7 @@ def test_transfer_schema_source_blockchain_id_not_in_supported(
 
 @pytest.mark.parametrize('registered', [True, False])
 @pytest.mark.parametrize('active', [True, False])
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_config')
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_config')
 def test_transfer_schema_source_blockchain_id_inactive(
         mocked_get_blockchain_config, active, registered, transfer_request,
         inactive_blockchain_id):
@@ -84,12 +84,12 @@ def test_transfer_schema_source_blockchain_id_inactive(
     patcher.stop()
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_config',
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_config',
                      return_value={
                          'active': True,
                          'registered': True
                      })
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_client')
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_client')
 def test_transfer_schema_sender_address_not_valid(mocked_blockchain_client,
                                                   mocked_get_blockchain_config,
                                                   source_blockchain,
@@ -108,12 +108,12 @@ def test_transfer_schema_sender_address_not_valid(mocked_blockchain_client,
     assert exc_info.value.messages == expected_message
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_config',
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_config',
                      return_value={
                          'active': True,
                          'registered': True
                      })
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_client')
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_client')
 def test_transfer_schema_recipient_address_not_valid(
         mocked_blockchain_client, mocked_get_blockchain_config,
         destination_blockchain, transfer_request):
@@ -133,12 +133,12 @@ def test_transfer_schema_recipient_address_not_valid(
     assert exc_info.value.messages == expected_message
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_config',
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_config',
                      return_value={
                          'active': True,
                          'registered': True
                      })
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_client')
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_client')
 def test_transfer_schema_source_token_address_not_valid(
         mocked_blockchain_client, mocked_get_blockchain_config, sender_address,
         source_token_address, transfer_request, source_blockchain):
@@ -160,12 +160,12 @@ def test_transfer_schema_source_token_address_not_valid(
     assert exc_info.value.messages == expected_message
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_config',
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_config',
                      return_value={
                          'active': True,
                          'registered': True
                      })
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_client')
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_client')
 def test_transfer_schema_destination_token_address_not_valid(
         mocked_blockchain_client, mocked_get_blockchain_config,
         destination_blockchain, sender_address, source_token_address,
@@ -189,12 +189,12 @@ def test_transfer_schema_destination_token_address_not_valid(
     assert exc_info.value.messages == expected_message
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_config',
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_config',
                      return_value={
                          'active': True,
                          'registered': True
                      })
-@unittest.mock.patch('pantos.servicenode.restapi.get_blockchain_client')
+@unittest.mock.patch('vision.servicenode.restapi.get_blockchain_client')
 def test_transfer_schema_amount_not_valid(mocked_blockchain_client,
                                           mocked_get_blockchain_config,
                                           transfer_request):

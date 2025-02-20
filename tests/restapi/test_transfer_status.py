@@ -5,13 +5,13 @@ import uuid
 import flask_restful  # type: ignore
 import marshmallow
 
-from pantos.servicenode.business.transfers import \
+from vision.servicenode.business.transfers import \
     TransferInteractorResourceNotFoundError
-from pantos.servicenode.restapi import TransferInteractor
-from pantos.servicenode.restapi import _TransferStatusSchema
+from vision.servicenode.restapi import TransferInteractor
+from vision.servicenode.restapi import _TransferStatusSchema
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.ok_response',
+@unittest.mock.patch('vision.servicenode.restapi.ok_response',
                      lambda data: data)
 @unittest.mock.patch.object(TransferInteractor, 'find_transfer')
 @unittest.mock.patch.object(_TransferStatusSchema, 'load')
@@ -45,7 +45,7 @@ def test_transfer_status_correct(mocked_load, mocked_find_transfer,
 
 
 @unittest.mock.patch(
-    'pantos.servicenode.restapi.resource_not_found',
+    'vision.servicenode.restapi.resource_not_found',
     lambda error_message: flask_restful.abort(404, message=error_message))
 @unittest.mock.patch.object(_TransferStatusSchema, 'load',
                             side_effect=marshmallow.ValidationError(''))
@@ -59,7 +59,7 @@ def test_transfer_status_validation_error(mocked_load, test_client, uuid_):
 
 
 @unittest.mock.patch(
-    'pantos.servicenode.restapi.resource_not_found',
+    'vision.servicenode.restapi.resource_not_found',
     lambda error_message: flask_restful.abort(404, message=error_message))
 @unittest.mock.patch.object(TransferInteractor, 'find_transfer')
 @unittest.mock.patch.object(_TransferStatusSchema, 'load')
@@ -75,7 +75,7 @@ def test_transfer_status_resource_not_found_error(mocked_load,
     assert json.loads(response.text)['message'] == expected_error_messsage
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.internal_server_error',
+@unittest.mock.patch('vision.servicenode.restapi.internal_server_error',
                      lambda error_message: flask_restful.abort(500))
 @unittest.mock.patch.object(_TransferStatusSchema, 'load',
                             side_effect=Exception)

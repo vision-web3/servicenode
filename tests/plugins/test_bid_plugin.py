@@ -2,8 +2,8 @@ import time
 
 import pytest
 
-from pantos.servicenode.plugins.base import BidPluginError
-from pantos.servicenode.plugins.bids import ConfigFileBidPlugin
+from vision.servicenode.plugins.base import BidPluginError
+from vision.servicenode.plugins.bids import ConfigFileBidPlugin
 
 FILE_PATH = 'bids.yml'
 

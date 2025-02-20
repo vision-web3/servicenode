@@ -2,12 +2,12 @@ import dataclasses
 import unittest
 
 import pytest
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.business.plugins import BidPluginInteractor
-from pantos.servicenode.business.plugins import execute_bid_plugin
-from pantos.servicenode.plugins.base import Bid
-from pantos.servicenode.plugins.base import BidPluginError
+from vision.servicenode.business.plugins import BidPluginInteractor
+from vision.servicenode.business.plugins import execute_bid_plugin
+from vision.servicenode.plugins.base import Bid
+from vision.servicenode.plugins.base import BidPluginError
 
 
 class MockedBidPlugin:
@@ -23,9 +23,9 @@ class MockedBidPlugin:
         ], 10
 
 
-@unittest.mock.patch('pantos.servicenode.business.plugins.'
+@unittest.mock.patch('vision.servicenode.business.plugins.'
                      'get_blockchain_config')
-@unittest.mock.patch('pantos.servicenode.business.plugins.execute_bid_plugin.'
+@unittest.mock.patch('vision.servicenode.business.plugins.execute_bid_plugin.'
                      'apply_async')
 @unittest.mock.patch.object(BidPluginInteractor, 'replace_bids')
 def test_execute_bid_plugin_correct(mocked_replace_bids, mocked_task,
@@ -41,9 +41,9 @@ def test_execute_bid_plugin_correct(mocked_replace_bids, mocked_task,
                                         countdown=1)
 
 
-@unittest.mock.patch('pantos.servicenode.business.plugins.'
+@unittest.mock.patch('vision.servicenode.business.plugins.'
                      'get_blockchain_config')
-@unittest.mock.patch('pantos.servicenode.business.plugins.execute_bid_plugin.'
+@unittest.mock.patch('vision.servicenode.business.plugins.execute_bid_plugin.'
                      'apply_async')
 @unittest.mock.patch.object(BidPluginInteractor, 'replace_bids')
 def test_execute_bid_plugin_interactor_error(mocked_replace_bids, mocked_task,
@@ -60,12 +60,12 @@ def test_execute_bid_plugin_interactor_error(mocked_replace_bids, mocked_task,
 
 
 @pytest.mark.parametrize('bids_config', [{'arguments': {}}, {'args': {}}])
-@unittest.mock.patch('pantos.servicenode.business.plugins.get_bid_plugin',
+@unittest.mock.patch('vision.servicenode.business.plugins.get_bid_plugin',
                      return_value=MockedBidPlugin(False))
-@unittest.mock.patch('pantos.servicenode.business.plugins.'
+@unittest.mock.patch('vision.servicenode.business.plugins.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.plugins.replace_bids')
-@unittest.mock.patch('pantos.servicenode.business.plugins.get_plugin_config')
+@unittest.mock.patch('vision.servicenode.business.plugins.replace_bids')
+@unittest.mock.patch('vision.servicenode.business.plugins.get_plugin_config')
 def test_replace_bids_correct(mocked_get_plugin_config, mocked_replace_bids,
                               mocked_get_blockchain_client,
                               mocked_get_bid_plugin, bids_config):
@@ -89,11 +89,11 @@ def test_replace_bids_correct(mocked_get_plugin_config, mocked_replace_bids,
                                            Blockchain.CELO.value, bids_to_dics)
 
 
-@unittest.mock.patch('pantos.servicenode.business.plugins.get_bid_plugin',
+@unittest.mock.patch('vision.servicenode.business.plugins.get_bid_plugin',
                      return_value=MockedBidPlugin(True))
-@unittest.mock.patch('pantos.servicenode.business.plugins.'
+@unittest.mock.patch('vision.servicenode.business.plugins.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.plugins.get_plugin_config',
+@unittest.mock.patch('vision.servicenode.business.plugins.get_plugin_config',
                      return_value={'bids': {
                          'arguments': {}
                      }})
@@ -106,10 +106,10 @@ def test_replace_bids_plugin_error(mocked_get_plugin_config,
     assert bid_plugin_interactor.replace_bids(Blockchain.ETHEREUM) == 60
 
 
-@unittest.mock.patch('pantos.servicenode.business.plugins.get_bid_plugin')
-@unittest.mock.patch('pantos.servicenode.business.plugins.'
+@unittest.mock.patch('vision.servicenode.business.plugins.get_bid_plugin')
+@unittest.mock.patch('vision.servicenode.business.plugins.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.plugins.get_plugin_config',
+@unittest.mock.patch('vision.servicenode.business.plugins.get_plugin_config',
                      return_value={'bids': {
                          'arguments': {}
                      }})

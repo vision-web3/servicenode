@@ -3,14 +3,14 @@ import unittest.mock
 import uuid
 
 import pytest
-from pantos.common.blockchains.base import BlockchainUtilities
-from pantos.common.blockchains.base import BlockchainUtilitiesError
-from pantos.common.blockchains.enums import Blockchain
-from pantos.common.entities import TransactionStatus
+from vision.common.blockchains.base import BlockchainUtilities
+from vision.common.blockchains.base import BlockchainUtilitiesError
+from vision.common.blockchains.enums import Blockchain
+from vision.common.entities import TransactionStatus
 
-from pantos.servicenode.blockchains.base import BlockchainClient
-from pantos.servicenode.blockchains.base import BlockchainClientError
-from pantos.servicenode.blockchains.base import \
+from vision.servicenode.blockchains.base import BlockchainClient
+from vision.servicenode.blockchains.base import BlockchainClientError
+from vision.servicenode.blockchains.base import \
     UnresolvableTransferSubmissionError
 
 _MOCK_CONFIG = {
@@ -19,7 +19,7 @@ _MOCK_CONFIG = {
     'average_block_time': 14,
     'confirmations': 12,
     'chain_id': 1,
-    'pan_token': '0xcd8fa68c471d7703C074EA5e2C56B852795B33c0',
+    'vsn_token': '0xcd8fa68c471d7703C074EA5e2C56B852795B33c0',
     'private_key': tempfile.mkstemp()[1],
     'private_key_password': 'some_password'
 }
@@ -35,12 +35,12 @@ _ON_CHAIN_TRANSFER_ID = 10512
 
 _OWN_ADDRESS = '0x7De6Ce2Ce98B446CdD2730d2D49B0e1FEe2Ff85C'
 
-_OWN_PAN_BALANCE = 10**5 * 10**8
+_OWN_VSN_BALANCE = 10**5 * 10**8
 
 
 @pytest.fixture(scope='module')
 @unittest.mock.patch(
-    'pantos.servicenode.blockchains.base.initialize_blockchain_utilities')
+    'vision.servicenode.blockchains.base.initialize_blockchain_utilities')
 @unittest.mock.patch.object(BlockchainClient, '_get_config',
                             return_value=_MOCK_CONFIG)
 @unittest.mock.patch.object(BlockchainClient, 'get_blockchain',
@@ -48,13 +48,13 @@ _OWN_PAN_BALANCE = 10**5 * 10**8
 @unittest.mock.patch.object(BlockchainClient, '__abstractmethods__', set())
 def blockchain_client(mock_get_blockchain, mock_get_config,
                       mock_initialize_blockchain_utilities, config_dict):
-    with unittest.mock.patch('pantos.servicenode.blockchains.base.config',
+    with unittest.mock.patch('vision.servicenode.blockchains.base.config',
                              config_dict):
         return BlockchainClient()
 
 
 @unittest.mock.patch(
-    'pantos.servicenode.blockchains.base.initialize_blockchain_utilities')
+    'vision.servicenode.blockchains.base.initialize_blockchain_utilities')
 @unittest.mock.patch.object(BlockchainClient, '_get_config',
                             return_value=_MOCK_CONFIG)
 @unittest.mock.patch.object(BlockchainClient, 'get_blockchain',
@@ -62,14 +62,14 @@ def blockchain_client(mock_get_blockchain, mock_get_config,
 @unittest.mock.patch.object(BlockchainClient, '__abstractmethods__', set())
 def test_init_correct(mock_get_blockchain, mock_get_config,
                       mock_initialize_blockchain_utilities, config_dict):
-    with unittest.mock.patch('pantos.servicenode.blockchains.base.config',
+    with unittest.mock.patch('vision.servicenode.blockchains.base.config',
                              config_dict):
         BlockchainClient()
     mock_initialize_blockchain_utilities.assert_called_once()
 
 
 @unittest.mock.patch(
-    'pantos.servicenode.blockchains.base.initialize_blockchain_utilities',
+    'vision.servicenode.blockchains.base.initialize_blockchain_utilities',
     side_effect=BlockchainUtilitiesError(''))
 @unittest.mock.patch.object(BlockchainClient, '_create_error',
                             return_value=BlockchainClientError(''))
@@ -81,7 +81,7 @@ def test_init_correct(mock_get_blockchain, mock_get_config,
 def test_init_error(mock_get_blockchain, mock_get_config, mock_create_error,
                     mock_initialize_blockchain_utilities, config_dict):
     with pytest.raises(BlockchainClientError) as exception_info:
-        with unittest.mock.patch('pantos.servicenode.blockchains.base.config',
+        with unittest.mock.patch('vision.servicenode.blockchains.base.config',
                                  config_dict):
             BlockchainClient()
     assert isinstance(exception_info.value.__context__,
@@ -93,11 +93,11 @@ def test_init_error(mock_get_blockchain, mock_get_config, mock_create_error,
 @unittest.mock.patch.object(BlockchainClient, '_get_utilities')
 @unittest.mock.patch.object(BlockchainClient, '_get_config',
                             return_value=_MOCK_CONFIG)
-def test_read_own_pan_balance_correct(mock_get_config, mock_get_utilities,
+def test_read_own_vsn_balance_correct(mock_get_config, mock_get_utilities,
                                       mock_get_own_address, blockchain_client):
-    mock_get_utilities().get_balance.return_value = _OWN_PAN_BALANCE
-    own_pan_balance = blockchain_client.read_own_pan_balance()
-    assert own_pan_balance == _OWN_PAN_BALANCE
+    mock_get_utilities().get_balance.return_value = _OWN_VSN_BALANCE
+    own_vsn_balance = blockchain_client.read_own_vsn_balance()
+    assert own_vsn_balance == _OWN_VSN_BALANCE
 
 
 @unittest.mock.patch.object(BlockchainClient, 'get_own_address',
@@ -107,12 +107,12 @@ def test_read_own_pan_balance_correct(mock_get_config, mock_get_utilities,
                             return_value=_MOCK_CONFIG)
 @unittest.mock.patch.object(BlockchainClient, 'get_error_class',
                             return_value=BlockchainClientError)
-def test_read_own_pan_balance_error(mock_get_error_class, mock_get_config,
+def test_read_own_vsn_balance_error(mock_get_error_class, mock_get_config,
                                     mock_get_utilities, mock_get_own_address,
                                     blockchain_client):
     mock_get_utilities().get_balance.side_effect = BlockchainUtilitiesError('')
     with pytest.raises(BlockchainClientError):
-        blockchain_client.read_own_pan_balance()
+        blockchain_client.read_own_vsn_balance()
 
 
 @unittest.mock.patch.object(BlockchainClient, '_get_utilities')

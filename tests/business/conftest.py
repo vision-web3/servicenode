@@ -1,15 +1,15 @@
-"""Shared fixtures for all pantos.servicenode.business package tests.
+"""Shared fixtures for all vision.servicenode.business package tests.
 
 """
 import time
 import uuid
 
 import pytest
-from pantos.common.blockchains.enums import Blockchain
-from pantos.common.entities import ServiceNodeBid
+from vision.common.blockchains.enums import Blockchain
+from vision.common.entities import ServiceNodeBid
 
-from pantos.servicenode.business.transfers import TransferInteractor
-from pantos.servicenode.database.enums import TransferStatus
+from vision.servicenode.business.transfers import TransferInteractor
+from vision.servicenode.database.enums import TransferStatus
 
 _SOURCE_BLOCKCHAIN = Blockchain.ETHEREUM
 

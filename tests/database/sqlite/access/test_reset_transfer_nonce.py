@@ -1,11 +1,11 @@
 import unittest.mock
 
-from pantos.servicenode.database.access import reset_transfer_nonce
+from vision.servicenode.database.access import reset_transfer_nonce
 
 _TRANSFER_NONCE = 17
 
 
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_reset_transfer_nonce(mocked_get_session_maker, db_initialized_session,
                               embedded_db_session_maker, transfer):
     mocked_get_session_maker.return_value = embedded_db_session_maker

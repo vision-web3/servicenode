@@ -2,15 +2,15 @@ import typing
 import unittest.mock
 
 import pytest
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.blockchains.base import BlockchainClientError
-from pantos.servicenode.business import node as node_module
-from pantos.servicenode.business.base import InvalidAmountError
-from pantos.servicenode.business.base import InvalidBlockchainAddressError
-from pantos.servicenode.business.base import InvalidUrlError
-from pantos.servicenode.business.node import NodeInteractor
-from pantos.servicenode.business.node import NodeInteractorError
+from vision.servicenode.blockchains.base import BlockchainClientError
+from vision.servicenode.business import node as node_module
+from vision.servicenode.business.base import InvalidAmountError
+from vision.servicenode.business.base import InvalidBlockchainAddressError
+from vision.servicenode.business.base import InvalidUrlError
+from vision.servicenode.business.node import NodeInteractor
+from vision.servicenode.business.node import NodeInteractorError
 
 _CONFIG_NODE_URL = 'https://config.node.url/'
 
@@ -24,7 +24,7 @@ _DEFAULT_MINIMUM_DEPOSIT = 10000000000000
 
 _CONFIG_DEPOSIT = _DEFAULT_MINIMUM_DEPOSIT
 
-_DEFAULT_OWN_PAN_BALANCE = _DEFAULT_MINIMUM_DEPOSIT
+_DEFAULT_OWN_VSN_BALANCE = _DEFAULT_MINIMUM_DEPOSIT
 
 
 class MockBlockchainClientError(BlockchainClientError):
@@ -34,7 +34,7 @@ class MockBlockchainClientError(BlockchainClientError):
 
 class MockBlockchainClient:
     def __init__(self, node_registered, is_unbonding, raise_error,
-                 minimum_deposit=None, own_pan_balance=None):
+                 minimum_deposit=None, own_vsn_balance=None):
         self.node_registered = node_registered
         self.unbonding = is_unbonding
         self.node_url = _DEFAULT_NODE_URL
@@ -42,8 +42,8 @@ class MockBlockchainClient:
         self.raise_error = raise_error
         self.minimum_deposit = (minimum_deposit if minimum_deposit is not None
                                 else _DEFAULT_MINIMUM_DEPOSIT)
-        self.own_pan_balance = (own_pan_balance if own_pan_balance is not None
-                                else _DEFAULT_OWN_PAN_BALANCE)
+        self.own_vsn_balance = (own_vsn_balance if own_vsn_balance is not None
+                                else _DEFAULT_OWN_VSN_BALANCE)
 
     def is_node_registered(self):
         if self.raise_error:
@@ -66,10 +66,10 @@ class MockBlockchainClient:
         assert self.node_registered
         return self.node_url
 
-    def read_own_pan_balance(self):
+    def read_own_vsn_balance(self):
         if self.raise_error:
             raise MockBlockchainClientError
-        return self.own_pan_balance
+        return self.own_vsn_balance
 
     def register_node(self, node_url, node_deposit, withdrawal_address):
         if self.raise_error:
@@ -120,9 +120,9 @@ def mock_blockchain_client(request, monkeypatch):
     minimum_deposit_marker = request.node.get_closest_marker('minimum_deposit')
     minimum_deposit = (None if minimum_deposit_marker is None else
                        minimum_deposit_marker.args[0])
-    own_pan_balance_marker = request.node.get_closest_marker('own_pan_balance')
-    own_pan_balance = (None if own_pan_balance_marker is None else
-                       own_pan_balance_marker.args[0])
+    own_vsn_balance_marker = request.node.get_closest_marker('own_vsn_balance')
+    own_vsn_balance = (None if own_vsn_balance_marker is None else
+                       own_vsn_balance_marker.args[0])
     blockchain_clients: dict[Blockchain, MockBlockchainClient] = {}
 
     def mock_get_blockchain_client(blockchain):
@@ -132,7 +132,7 @@ def mock_blockchain_client(request, monkeypatch):
             blockchain_client = MockBlockchainClient(
                 blockchain in is_registered, blockchain in unbonding,
                 error_marker is not None, minimum_deposit=minimum_deposit,
-                own_pan_balance=own_pan_balance)
+                own_vsn_balance=own_vsn_balance)
             blockchain_clients[blockchain] = blockchain_client
             return blockchain_client
 
@@ -314,7 +314,7 @@ def test_update_node_registrations_invalid_deposit_error(node_interactor):
 
 
 @pytest.mark.to_be_registered(list(Blockchain))
-@pytest.mark.own_pan_balance(_CONFIG_DEPOSIT - 1)
+@pytest.mark.own_vsn_balance(_CONFIG_DEPOSIT - 1)
 def test_update_node_registrations_invalid_balance_error(node_interactor):
     with pytest.raises(InvalidAmountError) as exception_info:
         node_interactor.update_node_registrations()
@@ -339,8 +339,8 @@ def test_update_node_registrations_error(node_interactor):
         node_interactor.update_node_registrations()
 
 
-@unittest.mock.patch('pantos.servicenode.business.node.get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.node.get_blockchain_config')
+@unittest.mock.patch('vision.servicenode.business.node.get_blockchain_client')
+@unittest.mock.patch('vision.servicenode.business.node.get_blockchain_config')
 def test_update_node_registrations_inactive_blockchain_non_working_node(
         mocked_get_blockchain_config, mocked_get_blockchain_client,
         node_interactor):

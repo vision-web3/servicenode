@@ -3,16 +3,16 @@ import unittest.mock
 
 import flask_restful  # type: ignore
 import marshmallow
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.business.transfers import SenderNonceNotUniqueError
-from pantos.servicenode.business.transfers import \
+from vision.servicenode.business.transfers import SenderNonceNotUniqueError
+from vision.servicenode.business.transfers import \
     TransferInteractorBidNotAcceptedError
-from pantos.servicenode.restapi import TransferInteractor
-from pantos.servicenode.restapi import _TransferSchema
+from vision.servicenode.restapi import TransferInteractor
+from vision.servicenode.restapi import _TransferSchema
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.ok_response',
+@unittest.mock.patch('vision.servicenode.restapi.ok_response',
                      lambda data: data)
 @unittest.mock.patch.object(_TransferSchema, 'load')
 def test_transfer_correct(mocked_load, test_client, uuid_,
@@ -26,7 +26,7 @@ def test_transfer_correct(mocked_load, test_client, uuid_,
     assert json.loads(response.text)['task_id'] == str(uuid_)
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.not_acceptable')
+@unittest.mock.patch('vision.servicenode.restapi.not_acceptable')
 @unittest.mock.patch.object(_TransferSchema, 'load',
                             side_effect=marshmallow.ValidationError(''))
 def test_transfer_validation_error(mocked_load, mocked_not_acceptable,
@@ -41,7 +41,7 @@ def test_transfer_validation_error(mocked_load, mocked_not_acceptable,
     assert response.status_code == 406
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.conflict')
+@unittest.mock.patch('vision.servicenode.restapi.conflict')
 @unittest.mock.patch.object(
     TransferInteractor, 'initiate_transfer',
     side_effect=SenderNonceNotUniqueError(Blockchain.ETHEREUM, '', 0))
@@ -61,7 +61,7 @@ def test_transfer_sender_nonce_not_unique_error(mocked_load,
     assert response.status_code == 406
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.not_acceptable')
+@unittest.mock.patch('vision.servicenode.restapi.not_acceptable')
 @unittest.mock.patch.object(
     TransferInteractor, 'initiate_transfer',
     side_effect=TransferInteractorBidNotAcceptedError('bid not accepted'))
@@ -81,7 +81,7 @@ def test_transfer_bid_not_accepted_error(mocked_load, mocked_initiate_transfer,
         'bid has been rejected by service node: bid not accepted')
 
 
-@unittest.mock.patch('pantos.servicenode.restapi.internal_server_error')
+@unittest.mock.patch('vision.servicenode.restapi.internal_server_error')
 @unittest.mock.patch.object(_TransferSchema, 'load', side_effect=Exception)
 def test_transfer_exception(mocked_load, mocked_internal_server_error,
                             test_client):

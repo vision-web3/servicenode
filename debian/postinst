@@ -53,15 +53,15 @@ esac
 #DEBHELPER#
 
 # Protect configuration files (containing passwords)
-chmod 0640 /etc/pantos/service-node*
-chmod 755 /opt/pantos/"$APP_ID"/bin/*
+chmod 0640 /etc/vision/service-node*
+chmod 755 /opt/vision/"$APP_ID"/bin/*
 
 # Data and log directory permissions
-chown -RPh "$RUN_AS":daemon /var/log/pantos/service-node /opt/pantos/"$APP_ID"/ /etc/pantos/service-node*
+chown -RPh "$RUN_AS":daemon /var/log/vision/service-node /opt/vision/"$APP_ID"/ /etc/vision/service-node*
 
 # Run upgrade / start service AFTER permissions etc. are fixed
 if [ "$1" = "configure" ]; then
-    db_input high pantos/common/finish_note || true
+    db_input high vision/common/finish_note || true
     db_go || true
 fi
 

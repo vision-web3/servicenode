@@ -3,9 +3,9 @@ import unittest.mock
 
 import pytest
 
-from pantos.servicenode.business import bids as bids_module
-from pantos.servicenode.business.bids import BidInteractor
-from pantos.servicenode.business.bids import BidInteractorError
+from vision.servicenode.business import bids as bids_module
+from vision.servicenode.business.bids import BidInteractor
+from vision.servicenode.business.bids import BidInteractorError
 
 
 @dataclasses.dataclass
@@ -47,7 +47,7 @@ def mock_database_access(monkeypatch):
     monkeypatch.setattr(bids_module, 'database_access', mock_database_access)
 
 
-@unittest.mock.patch('pantos.servicenode.business.bids.get_signer')
+@unittest.mock.patch('vision.servicenode.business.bids.get_signer')
 def test_get_current_bids_correct(mocked_get_signer, bid_interactor):
     mocked_get_signer.return_value.sign_message.return_value = 'sig'
     bids = bid_interactor.get_current_bids(0, 1)
@@ -65,7 +65,7 @@ def test_get_current_bids_correct(mocked_get_signer, bid_interactor):
 
 
 @unittest.mock.patch(
-    'pantos.servicenode.business.bids.database_access.read_bids',
+    'vision.servicenode.business.bids.database_access.read_bids',
     side_effect=BidInteractorError)
 def test_get_current_bids_error(mocked_db_read, bid_interactor):
     with pytest.raises(BidInteractorError):

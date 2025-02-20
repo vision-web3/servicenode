@@ -1,6 +1,6 @@
 networks:
-  pantos-service-node:
-    name: pantos-service-node-${STACK_IDENTIFIER}-${INSTANCE-1}
+  vision-service-node:
+    name: vision-service-node-${STACK_IDENTIFIER}-${INSTANCE-1}
     driver: overlay
     attachable: true
 
@@ -12,33 +12,33 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-    image: ${DOCKER_REGISTRY-pantosio}/service-node-app:${DOCKER_TAG-local}
+    image: ${DOCKER_REGISTRY-visionweb3foundation}/service-node-app:${DOCKER_TAG-local}
     build:
       context: .
       dockerfile: Dockerfile
       target: servicenode
       x-bake:
         tags:
-          - ${DOCKER_REGISTRY-pantosio}/service-node-app:${DOCKER_TAG-local}
-          - ${DOCKER_REGISTRY-pantosio}/service-node-app:${EXTRA_TAG-local}
+          - ${DOCKER_REGISTRY-visionweb3foundation}/service-node-app:${DOCKER_TAG-local}
+          - ${DOCKER_REGISTRY-visionweb3foundation}/service-node-app:${EXTRA_TAG-local}
     networks:
-      pantos-service-node:
+      vision-service-node:
     env_file: []
     environment:
       # Ignore the env file inside the docker container
-      PANTOS_ENV_FILE: ' '
+      VISION_ENV_FILE: ' '
       APP_HOST: 0.0.0.0
       APP_PORT: 8080
       APP_LOG_FILE_ENABLED: 'false'
       APP_LOG_FORMAT: human_readable
-      DB_URL: postgresql+psycopg://pantos-service-node:pantos@db/pantos-service-node
-      CELERY_BROKER: amqp://pantos-service-node:pantos@broker:5672/pantos-service-node
-      CELERY_BACKEND: db+postgresql+psycopg://pantos-service-node:pantos@db/pantos-service-node-celery
+      DB_URL: postgresql+psycopg://vision-service-node:vision@db/vision-service-node
+      CELERY_BROKER: amqp://vision-service-node:vision@broker:5672/vision-service-node
+      CELERY_BACKEND: db+postgresql+psycopg://vision-service-node:vision@db/vision-service-node-celery
       DEV_MODE: ${DEV_MODE}
     ports:
       - 808${INSTANCE-0}:8080
     healthcheck:
-      test: ["CMD", "/usr/bin/pantos-service-node-server", "--status"]
+      test: ["CMD", "/usr/bin/vision-service-node-server", "--status"]
       interval: 5s
       timeout: 10s
       retries: 3
@@ -51,26 +51,26 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./pantos
-          target: /opt/pantos/pantos-service-node/lib/python3.13/site-packages/pantos
+          path: ./vision
+          target: /opt/vision/vision-service-node/lib/python3/site-packages/vision
         - action: sync+restart
           path: ./linux/scripts/start-web.py
-          target: /opt/pantos/pantos-service-node/bin/start-web.py
+          target: /opt/vision/vision-service-node/bin/start-web.py
         - action: sync+restart
-          path: ./linux/scripts/pantos-service-node-server
-          target: /opt/pantos/pantos-service-node/bin/pantos-service-node-server
+          path: ./linux/scripts/vision-service-node-server
+          target: /opt/vision/vision-service-node/bin/vision-service-node-server
         - action: sync+restart
           path: service-node-config.yml
-          target: /opt/pantos/pantos-service-node/service-node-config.yml
+          target: /opt/vision/vision-service-node/service-node-config.yml
         - action: sync+restart
           path: alembic.ini
-          target: /opt/pantos/pantos-service-node/alembic.ini
+          target: /opt/vision/vision-service-node/alembic.ini
         - action: sync+restart
           path: service-node-config.env
-          target: /etc/pantos/service-node-config.env
+          target: /etc/vision/service-node-config.env
         - action: sync+restart
           path: bids.yml
-          target: /etc/pantos/service-node-bids.yml
+          target: /etc/vision/service-node-bids.yml
         - action: rebuild
           path: Dockerfile
         - action: rebuild
@@ -91,32 +91,32 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-    image: ${DOCKER_REGISTRY-pantosio}/service-node-worker:${DOCKER_TAG-local}
+    image: ${DOCKER_REGISTRY-visionweb3foundation}/service-node-worker:${DOCKER_TAG-local}
     build:
       context: .
       dockerfile: Dockerfile
       target: servicenode-celery-worker
       x-bake:
         tags:
-          - ${DOCKER_REGISTRY-pantosio}/service-node-worker:${DOCKER_TAG-local}
-          - ${DOCKER_REGISTRY-pantosio}/service-node-worker:${EXTRA_TAG-local}
+          - ${DOCKER_REGISTRY-visionweb3foundation}/service-node-worker:${DOCKER_TAG-local}
+          - ${DOCKER_REGISTRY-visionweb3foundation}/service-node-worker:${EXTRA_TAG-local}
     networks:
-      pantos-service-node:
+      vision-service-node:
     env_file: []
     environment:
       # Ignore the env file inside the docker container
-      PANTOS_ENV_FILE: ' '
-      PANTOS_CELERY_AUTORESTART: 'true'
+      VISION_ENV_FILE: ' '
+      VISION_CELERY_AUTORESTART: 'true'
       APP_HOST: 0.0.0.0
       APP_PORT: 8080
       CELERY_LOG_FORMAT: human_readable
       CELERY_LOG_FILE_ENABLED: 'false'
-      DB_URL: postgresql+psycopg://pantos-service-node:pantos@db/pantos-service-node
-      CELERY_BROKER: amqp://pantos-service-node:pantos@broker:5672/pantos-service-node
-      CELERY_BACKEND: db+postgresql+psycopg://pantos-service-node:pantos@db/pantos-service-node-celery
+      DB_URL: postgresql+psycopg://vision-service-node:vision@db/vision-service-node
+      CELERY_BROKER: amqp://vision-service-node:vision@broker:5672/vision-service-node
+      CELERY_BACKEND: db+postgresql+psycopg://vision-service-node:vision@db/vision-service-node-celery
       DEV_MODE: ${DEV_MODE}
     healthcheck:
-      test: ["CMD", "/usr/bin/pantos-service-node-celery", "--status"]
+      test: ["CMD", "/usr/bin/vision-service-node-celery", "--status"]
       interval: 5s
       timeout: 10s
       retries: 3
@@ -128,23 +128,23 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./pantos
-          target: /opt/pantos/pantos-service-node/lib/python3.13/site-packages/pantos
+          path: ./vision
+          target: /opt/vision/vision-service-node/lib/python3/site-packages/vision
         - action: sync+restart
-          path: ./linux/scripts/pantos-service-node-celery
-          target: /opt/pantos/pantos-service-node/bin/pantos-service-node-celery
+          path: ./linux/scripts/vision-service-node-celery
+          target: /opt/vision/vision-service-node/bin/vision-service-node-celery
         - action: sync+restart
           path: service-node-config.yml
-          target: /opt/pantos/pantos-service-node/service-node-config.yml
+          target: /opt/vision/vision-service-node/service-node-config.yml
         - action: sync+restart
           path: alembic.ini
-          target: /opt/pantos/pantos-service-node/alembic.ini
+          target: /opt/vision/vision-service-node/alembic.ini
         - action: sync+restart
           path: service-node-config.env
-          target: /etc/pantos/service-node-config.env
+          target: /etc/vision/service-node-config.env
         - action: sync+restart
           path: bids.yml
-          target: /etc/pantos/service-node-bids.yml
+          target: /etc/vision/service-node-bids.yml
         - action: rebuild
           path: Dockerfile
         - action: rebuild
@@ -172,7 +172,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      pantos-service-node:
+      vision-service-node:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -196,18 +196,18 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-    hostname: pantos-service-node
+    hostname: vision-service-node
     networks:
-      pantos-service-node:
+      vision-service-node:
     healthcheck:
       test: [ "CMD", "rabbitmqctl", "status" ]
       interval: 10s
       timeout: 5s
       retries: 5
     environment:
-      RABBITMQ_DEFAULT_USER: pantos-service-node
-      RABBITMQ_DEFAULT_PASS: pantos
-      RABBITMQ_DEFAULT_VHOST: pantos-service-node
+      RABBITMQ_DEFAULT_USER: vision-service-node
+      RABBITMQ_DEFAULT_PASS: vision
+      RABBITMQ_DEFAULT_VHOST: vision-service-node
     volumes:
       - rabbitmq_data:/rabbitmq_data
 

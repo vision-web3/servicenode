@@ -4,24 +4,24 @@ import uuid
 
 import celery.exceptions  # type: ignore
 import pytest
-from pantos.common.blockchains.enums import Blockchain
-from pantos.common.entities import TransactionStatus
+from vision.common.blockchains.enums import Blockchain
+from vision.common.entities import TransactionStatus
 
-from pantos.servicenode.blockchains.base import BlockchainClient
-from pantos.servicenode.blockchains.base import InvalidSignatureError
-from pantos.servicenode.blockchains.base import \
+from vision.servicenode.blockchains.base import BlockchainClient
+from vision.servicenode.blockchains.base import InvalidSignatureError
+from vision.servicenode.blockchains.base import \
     UnresolvableTransferSubmissionError
-from pantos.servicenode.business.bids import BidInteractorError
-from pantos.servicenode.business.transfers import TransferInteractor
-from pantos.servicenode.business.transfers import TransferInteractorError
-from pantos.servicenode.business.transfers import \
+from vision.servicenode.business.bids import BidInteractorError
+from vision.servicenode.business.transfers import TransferInteractor
+from vision.servicenode.business.transfers import TransferInteractorError
+from vision.servicenode.business.transfers import \
     TransferInteractorResourceNotFoundError
-from pantos.servicenode.business.transfers import \
+from vision.servicenode.business.transfers import \
     TransferInteractorUnrecoverableError
-from pantos.servicenode.business.transfers import confirm_transfer_task
-from pantos.servicenode.business.transfers import execute_transfer_task
-from pantos.servicenode.database.enums import TransferStatus
-from pantos.servicenode.database.exceptions import SenderNonceNotUniqueError
+from vision.servicenode.business.transfers import confirm_transfer_task
+from vision.servicenode.business.transfers import execute_transfer_task
+from vision.servicenode.database.enums import TransferStatus
+from vision.servicenode.database.exceptions import SenderNonceNotUniqueError
 
 
 class MockBidPlugin:
@@ -34,14 +34,14 @@ def transfer_interactor():
     return TransferInteractor()
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.get_bid_plugin')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.get_bid_plugin')
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'execute_transfer_task')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_config')
 @unittest.mock.patch.object(TransferInteractor,
                             '_TransferInteractor__check_valid_until',
@@ -92,7 +92,7 @@ def test_initiate_transfer_correct(
         mocked_database_access.create_transfer(), uuid.UUID(uuid_))
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_config')
 def test_initiate_transfer_request_sender_nonce_not_unique_error(
         mocked_get_blockchain_config, source_blockchain, sender_address, nonce,
@@ -107,10 +107,10 @@ def test_initiate_transfer_request_sender_nonce_not_unique_error(
     assert exc_info.value == nonce_not_unique_error
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.get_bid_plugin')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.get_bid_plugin')
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_config')
 @unittest.mock.patch.object(TransferInteractor,
                             '_TransferInteractor__check_valid_until')
@@ -127,10 +127,10 @@ def test_initiate_transfer_request_not_valid_until(
         TransferInteractor().initiate_transfer(initiate_transfer_request)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.get_bid_plugin')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.get_bid_plugin')
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_config')
 @unittest.mock.patch.object(TransferInteractor,
                             '_TransferInteractor__check_valid_until',
@@ -153,7 +153,7 @@ def test_initiate_transfer_request_bid_invalid(
 
 
 @unittest.mock.patch(
-    'pantos.servicenode.business.transfers.get_blockchain_config',
+    'vision.servicenode.business.transfers.get_blockchain_config',
     side_effect=Exception)
 def test_initiate_transfer_request_error(mocked_get_blockchain_config,
                                          initiate_transfer_request):
@@ -161,7 +161,7 @@ def test_initiate_transfer_request_error(mocked_get_blockchain_config,
         TransferInteractor().initiate_transfer(initiate_transfer_request)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_find_transfer_correct(mocked_database_access, source_blockchain,
                                destination_blockchain, amount, transfer_status,
@@ -185,7 +185,7 @@ def test_find_transfer_correct(mocked_database_access, source_blockchain,
     mocked_database_access.read_transfer_by_task_id.assert_called_with(uuid_)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_find_transfer_resource_not_found_error(mocked_database_access, uuid_):
     mocked_database_access.read_transfer_by_task_id.return_value = None
@@ -194,7 +194,7 @@ def test_find_transfer_resource_not_found_error(mocked_database_access, uuid_):
         TransferInteractor().find_transfer(uuid_)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_find_transfer_error(mocked_database_access, uuid_):
     mocked_database_access.read_transfer_by_task_id.side_effect = \
@@ -204,11 +204,11 @@ def test_find_transfer_error(mocked_database_access, uuid_):
         TransferInteractor().find_transfer(uuid_)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'time')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_execute_transfer_single_chain_correct(mocked_database_access,
                                                mocked_get_blockchain_client,
@@ -242,9 +242,9 @@ def test_execute_transfer_single_chain_correct(mocked_database_access,
             start_transfer_submission(expected_transfer_request))
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'time')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_execute_transfer_single_chain_source_and_destination_token_error(
         mocked_database_access, mocked_time, execute_transfer_request):
@@ -259,11 +259,11 @@ def test_execute_transfer_single_chain_source_and_destination_token_error(
         execute_transfer_request.internal_transfer_id, TransferStatus.FAILED)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'time')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_execute_transfer_single_chain_unrecoverable_error(
         mocked_database_access, mocked_get_blockchain_client, mocked_time,
@@ -283,11 +283,11 @@ def test_execute_transfer_single_chain_unrecoverable_error(
         execute_transfer_request.internal_transfer_id, TransferStatus.FAILED)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'time')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_execute_transfer_single_chain_error(mocked_database_access,
                                              mocked_get_blockchain_client,
@@ -308,11 +308,11 @@ def test_execute_transfer_single_chain_error(mocked_database_access,
         execute_transfer_request.internal_transfer_id, TransferStatus.ACCEPTED)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'time')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_execute_transfer_cross_chain_correct(mocked_database_access,
                                               mocked_get_blockchain_client,
@@ -349,10 +349,10 @@ def test_execute_transfer_cross_chain_correct(mocked_database_access,
             start_transfer_from_submission(expected_transfer_from_request))
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.time')
+@unittest.mock.patch('vision.servicenode.business.transfers.time')
 @unittest.mock.patch(
-    'pantos.servicenode.business.transfers.get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.database_access')
+    'vision.servicenode.business.transfers.get_blockchain_client')
+@unittest.mock.patch('vision.servicenode.business.transfers.database_access')
 def test_execute_transfer_cross_chain_destination_token_inactive_error(
         mocked_database_access, mocked_get_blockchain_client, mocked_time,
         execute_transfer_request):
@@ -370,10 +370,10 @@ def test_execute_transfer_cross_chain_destination_token_inactive_error(
         execute_transfer_request.internal_transfer_id, TransferStatus.FAILED)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.time')
+@unittest.mock.patch('vision.servicenode.business.transfers.time')
 @unittest.mock.patch(
-    'pantos.servicenode.business.transfers.get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.database_access')
+    'vision.servicenode.business.transfers.get_blockchain_client')
+@unittest.mock.patch('vision.servicenode.business.transfers.database_access')
 def test_execute_transfer_cross_chain_destination_token_address_invalid_error(
         mocked_database_access, mocked_get_blockchain_client, mocked_time,
         execute_transfer_request):
@@ -393,11 +393,11 @@ def test_execute_transfer_cross_chain_destination_token_address_invalid_error(
         execute_transfer_request.internal_transfer_id, TransferStatus.FAILED)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'time')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_execute_transfer_cross_chain_unrecoverable_error(
         mocked_database_access, mocked_get_blockchain_client, mocked_time,
@@ -418,9 +418,9 @@ def test_execute_transfer_cross_chain_unrecoverable_error(
         execute_transfer_request.internal_transfer_id, TransferStatus.FAILED)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'time')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_execute_transfer_validity_expired_unrecoverable_error(
         mocked_database_access, mocked_time, execute_transfer_request):
@@ -433,9 +433,9 @@ def test_execute_transfer_validity_expired_unrecoverable_error(
         execute_transfer_request.internal_transfer_id, TransferStatus.FAILED)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_confirm_transfer_confirmed_correct(mocked_database_access,
                                             mocked_get_blockchain_client,
@@ -468,9 +468,9 @@ def test_confirm_transfer_confirmed_correct(mocked_database_access,
         TransferStatus.CONFIRMED)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_confirm_transfer_unconfirmed_correct(mocked_database_access,
                                               mocked_get_blockchain_client,
@@ -489,9 +489,9 @@ def test_confirm_transfer_unconfirmed_correct(mocked_database_access,
             confirm_transfer_request.destination_blockchain)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_confirm_transfer_reverted_correct(mocked_database_access,
                                            mocked_get_blockchain_client,
@@ -515,9 +515,9 @@ def test_confirm_transfer_reverted_correct(mocked_database_access,
         confirm_transfer_request.internal_transfer_id, TransferStatus.REVERTED)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'get_blockchain_client')
-@unittest.mock.patch('pantos.servicenode.business.transfers.'
+@unittest.mock.patch('vision.servicenode.business.transfers.'
                      'database_access')
 def test_confirm_transfer_unresolvable_submission_error(
         mocked_database_access, mocked_get_blockchain_client,
@@ -540,7 +540,7 @@ def test_confirm_transfer_unresolvable_submission_error(
 
 
 @unittest.mock.patch(
-    'pantos.servicenode.business.transfers.get_blockchain_client',
+    'vision.servicenode.business.transfers.get_blockchain_client',
     side_effect=Exception())
 def test_confirm_transfer_error(mocked_get_blockchain_client,
                                 confirm_transfer_request):
@@ -548,9 +548,9 @@ def test_confirm_transfer_error(mocked_get_blockchain_client,
         TransferInteractor().confirm_transfer(confirm_transfer_request)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.config')
+@unittest.mock.patch('vision.servicenode.business.transfers.config')
 @unittest.mock.patch(
-    'pantos.servicenode.business.transfers.confirm_transfer_task')
+    'vision.servicenode.business.transfers.confirm_transfer_task')
 @unittest.mock.patch.object(TransferInteractor, 'execute_transfer')
 def test_execute_transfer_task_correct(
         mocked_execute_transfer, mocked_confirm_task, mocked_config,
@@ -589,7 +589,7 @@ def test_execute_transfer_task_correct(
         countdown=confirm_retry_interval)
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.config')
+@unittest.mock.patch('vision.servicenode.business.transfers.config')
 @unittest.mock.patch.object(
     TransferInteractor, 'execute_transfer',
     side_effect=TransferInteractorUnrecoverableError(''))
@@ -608,9 +608,9 @@ def test_execute_transfer_task_unrecoverable_error(
     assert result is False
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.config')
+@unittest.mock.patch('vision.servicenode.business.transfers.config')
 @unittest.mock.patch(
-    'pantos.servicenode.business.transfers.execute_transfer_task.retry',
+    'vision.servicenode.business.transfers.execute_transfer_task.retry',
     return_value=celery.exceptions.RetryTaskError())
 @unittest.mock.patch.object(TransferInteractor, 'execute_transfer')
 def test_execute_transfer_task_error(
@@ -663,9 +663,9 @@ def test_confirm_transfer_task_correct(mocked_confirm_transfer,
 
 
 @unittest.mock.patch(
-    'pantos.servicenode.business.transfers.confirm_transfer_task.retry',
+    'vision.servicenode.business.transfers.confirm_transfer_task.retry',
     return_value=celery.exceptions.RetryTaskError())
-@unittest.mock.patch('pantos.servicenode.business.transfers.config')
+@unittest.mock.patch('vision.servicenode.business.transfers.config')
 @unittest.mock.patch.object(TransferInteractor, 'confirm_transfer')
 def test_confirm_transfer_task_confirmation_not_completed(
         mocked_confirm_transfer, mocked_config, mocked_retry,
@@ -690,9 +690,9 @@ def test_confirm_transfer_task_confirmation_not_completed(
 
 
 @unittest.mock.patch(
-    'pantos.servicenode.business.transfers.confirm_transfer_task.retry',
+    'vision.servicenode.business.transfers.confirm_transfer_task.retry',
     return_value=celery.exceptions.RetryTaskError())
-@unittest.mock.patch('pantos.servicenode.business.transfers.config')
+@unittest.mock.patch('vision.servicenode.business.transfers.config')
 @unittest.mock.patch.object(TransferInteractor, 'confirm_transfer')
 def test_confirm_transfer_task_confirmation_error(
         mocked_confirm_transfer, mocked_config, mocked_retry,
@@ -788,8 +788,8 @@ def test_has_bid_expired(bid_vaild_until, expected, transfer_interactor):
         bid_vaild_until) is expected
 
 
-@unittest.mock.patch('pantos.servicenode.business.transfers.get_signer')
-@unittest.mock.patch('pantos.servicenode.business.transfers.get_signer_config')
+@unittest.mock.patch('vision.servicenode.business.transfers.get_signer')
+@unittest.mock.patch('vision.servicenode.business.transfers.get_signer_config')
 def test_verify_bids_signature(mocked_get_signer_config, mocked_get_signer,
                                transfer_interactor):
     fee = 0

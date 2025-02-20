@@ -2,12 +2,12 @@ import unittest.mock
 
 import pytest
 
-from pantos.servicenode.database.access import update_transfer_status
-from pantos.servicenode.database.enums import TransferStatus
-from pantos.servicenode.database.exceptions import DatabaseError
+from vision.servicenode.database.access import update_transfer_status
+from vision.servicenode.database.enums import TransferStatus
+from vision.servicenode.database.exceptions import DatabaseError
 
 
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_transfer_status_correct(mocked_session, db_initialized_session,
                                         embedded_db_session_maker, transfer):
     mocked_session.return_value = embedded_db_session_maker
@@ -22,7 +22,7 @@ def test_update_transfer_status_correct(mocked_session, db_initialized_session,
     assert transfer.sender_nonce is None
 
 
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_transfer_status_database_error(mocked_session,
                                                embedded_db_session_maker,
                                                transfer):

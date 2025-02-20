@@ -1,10 +1,10 @@
 import unittest.mock
 
 import pytest
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.blockchains.celo import CeloClient
-from pantos.servicenode.blockchains.celo import CeloClientError
+from vision.servicenode.blockchains.celo import CeloClient
+from vision.servicenode.blockchains.celo import CeloClientError
 
 
 @pytest.fixture(scope='module')

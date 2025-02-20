@@ -1,18 +1,18 @@
 import unittest.mock
 
 import pytest
-from pantos.common.logging import LogFormat
+from vision.common.logging import LogFormat
 
 
 @pytest.mark.parametrize('file_enabled', [True, False])
 @pytest.mark.parametrize('console_enabled', [True, False])
 @pytest.mark.parametrize('log_format',
                          [log_format for log_format in LogFormat])
-@unittest.mock.patch('pantos.servicenode.celery.initialize_logger')
-@unittest.mock.patch('pantos.servicenode.celery.config')
+@unittest.mock.patch('vision.servicenode.celery.initialize_logger')
+@unittest.mock.patch('vision.servicenode.celery.config')
 def test_setup_logger_correct(mocked_config, mocked_initialize_logger,
                               log_format, console_enabled, file_enabled):
-    from pantos.servicenode.celery import setup_logger
+    from vision.servicenode.celery import setup_logger
     mocked_logger = unittest.mock.Mock()
     mocked_config_dict = {
         'application': {
@@ -41,12 +41,12 @@ def test_setup_logger_correct(mocked_config, mocked_initialize_logger,
     assert mocked_initialize_logger.call_count == 1
 
 
-@unittest.mock.patch('pantos.servicenode.celery.initialize_logger',
+@unittest.mock.patch('vision.servicenode.celery.initialize_logger',
                      side_effect=Exception)
-@unittest.mock.patch('pantos.servicenode.celery.config')
+@unittest.mock.patch('vision.servicenode.celery.config')
 def test_setup_logger_initialize_logger_exception(mocked_config,
                                                   mocked_initialize_logger):
-    from pantos.servicenode.celery import setup_logger
+    from vision.servicenode.celery import setup_logger
     mocked_logger = unittest.mock.Mock()
     mocked_config_dict = {
         'application': {

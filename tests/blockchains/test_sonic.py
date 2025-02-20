@@ -1,10 +1,10 @@
 import unittest.mock
 
 import pytest
-from pantos.common.blockchains.enums import Blockchain
+from vision.common.blockchains.enums import Blockchain
 
-from pantos.servicenode.blockchains.sonic import SonicClient
-from pantos.servicenode.blockchains.sonic import SonicClientError
+from vision.servicenode.blockchains.sonic import SonicClient
+from vision.servicenode.blockchains.sonic import SonicClientError
 
 
 @pytest.fixture(scope='module')

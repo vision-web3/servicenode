@@ -2,11 +2,11 @@ import unittest.mock
 
 import pytest
 
-from pantos.servicenode.database.access import update_transfer_transaction_id
-from pantos.servicenode.database.exceptions import DatabaseError
+from vision.servicenode.database.access import update_transfer_transaction_id
+from vision.servicenode.database.exceptions import DatabaseError
 
 
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_transfer_transaction_id_correct(mocked_session,
                                                 db_initialized_session,
                                                 embedded_db_session_maker,
@@ -23,7 +23,7 @@ def test_update_transfer_transaction_id_correct(mocked_session,
     assert transfer.transaction_id == new_transaction_id
 
 
-@unittest.mock.patch('pantos.servicenode.database.access.get_session_maker')
+@unittest.mock.patch('vision.servicenode.database.access.get_session_maker')
 def test_update_transfer_transaction_id_unknown_database_error(
         mocked_session, embedded_db_session_maker, transfer,
         on_chain_transfer_id):
