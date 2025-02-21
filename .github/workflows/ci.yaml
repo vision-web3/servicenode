@@ -328,6 +328,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: ${{ env.VISION_SERVICE_NODE }}
+          # !!!!! Following line MUST be removed
+          token: ${{ secrets.GH_TOKEN }}
           sparse-checkout: |
             docker-compose.yml
             docker-compose.override.yml
@@ -342,11 +344,12 @@ jobs:
 
       - name: Load images
         run: |
-          cat export/app.tar | docker import - visionio/service-node-app:local
-          cat export/worker.tar | docker import - visionio/service-node-worker:local
+          cat export/app.tar | docker import - visionweb3foundation/service-node-app:local
+          cat export/worker.tar | docker import - visionweb3foundation/service-node-worker:local
 
       - uses: vision-web3-foundation/e2e-testing/.github/actions/run-tests@main
         with:
           servicenode-path: ${{ env.VISION_SERVICE_NODE }}
           servicenode-version: 'local'
+          token: ${{ secrets.GH_TOKEN }}
 
