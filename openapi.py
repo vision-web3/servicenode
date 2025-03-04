@@ -10,6 +10,7 @@ from flasgger import Swagger
 
 from vision.servicenode.restapi import _BidSchema
 from vision.servicenode.restapi import _BidsSchema
+from vision.servicenode.restapi import _NodeHealthSchema
 from vision.servicenode.restapi import _TransferResponseSchema
 from vision.servicenode.restapi import _TransferSchema
 from vision.servicenode.restapi import _TransferStatusResponseSchema
@@ -26,7 +27,8 @@ spec = APISpec("Vision Service Node APISpec", '1.0', "3.0.2", plugins=plugins)
 
 template = spec.to_flasgger(
     flask_app, definitions=[
-        _BidSchema, _BidsSchema, _TransferSchema, _TransferResponseSchema,
+        _BidSchema, _BidsSchema,_NodeHealthSchema,
+         _TransferSchema, _TransferResponseSchema,
         _TransferStatusSchema, _TransferStatusResponseSchema
     ])
 

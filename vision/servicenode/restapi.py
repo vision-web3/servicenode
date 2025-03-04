@@ -45,6 +45,16 @@ _logger = logging.getLogger(__name__)
 """Logger for this module."""
 
 
+class _NodeHealthSchema(marshmallow.Schema):
+    """Validation schema for the node health status.
+
+    """
+    blockchain = marshmallow.fields.String(required=True)
+    unhealthy_total = marshmallow.fields.Integer(required=True)
+    unhealthy_endpoints = marshmallow.fields.List(
+        marshmallow.fields.String(), required=True)
+    healthy_total = marshmallow.fields.Integer(required=True)
+
 class _BidSchema(marshmallow.Schema):
     """Validation schema for a bid within a transfer request.
 
@@ -461,12 +471,14 @@ class _NodesHealth(flask_restful.Resource):
           - Nodes Health
         responses:
           200:
-            description: List of bids for a given source and \
-destination blockchain
+            description: List of health status for all supported blockchains \
+by the service node
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/_Bid'
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/_NodeHealth'
           500:
             description: 'internal server error'
         """
