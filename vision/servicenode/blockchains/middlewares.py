@@ -9,6 +9,12 @@ _logger = logging.getLogger(__name__)
 
 
 class NodeHealthMiddleware():
+    """Middleware to monitor the health of the blockchain nodes.
+
+    This middleware is used to monitor the health of the blockchain nodes
+    that are being used by the service node. It is used to keep track of the
+    health of the nodes and to flush the data to the database.
+    """
     _health_data: typing.Dict[str, typing.Dict[str, typing.Any]] = {}
 
     def __init__(self, make_request=None, w3=None):
@@ -19,6 +25,13 @@ class NodeHealthMiddleware():
         self.add_blockchain_endpoint(obfuscated_endpoint)
 
     def add_blockchain_endpoint(self, endpoint_uri: str):
+        """Add a blockchain endpoint to the health data.
+
+        Parameters
+        ----------
+        endpoint_uri : str
+            The endpoint URI to be added to the health data.
+        """
         rpc_nodes = get_blockchains_rpc_nodes()
         for blockchain, nodes in rpc_nodes.items():
             if endpoint_uri in nodes[0]:
@@ -31,6 +44,9 @@ class NodeHealthMiddleware():
 
     @classmethod
     def flush_health_data(self):
+        """Flush the health data to the database.
+
+        """
         node_health_data: typing.Dict[str, typing.Dict[str, typing.Any]] = {}
         for endpoint, data in self._health_data.items():
             blockchain = data['blockchain'].name
@@ -79,7 +95,6 @@ class NodeHealthMiddleware():
         return obfuscated_url
 
     def __call__(self, method, params):
-        _logger.info(f"health data: {self._health_data}")
         # perform the RPC request, getting the response
         try:
             response = self.make_request(method, params)

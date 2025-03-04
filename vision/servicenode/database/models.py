@@ -318,3 +318,28 @@ class Transfer(Base):
             'ix_transfers_source_blockchain_id_nonce_status_id',
             source_blockchain_id, nonce.desc(), status_id),
     )
+
+
+class NodeHealth(Base):
+    """Model class for the "node_health" database table. Each record in
+    the table represents a blockchain with its endpoints being used and their
+    overall health status.
+
+    Attributes
+    ----------
+    blockchain_id : sqlalchemy.Column
+        The unique blockchain ID (foreign key, primary key).
+    unhealthy_total : sqlalchemy.Column
+        The total number of unhealthy endpoints.
+    unhealthy_endpoints : sqlalchemy.Column
+        The list of unhealthy endpoints.
+    healthy_total : sqlalchemy.Column
+        The total number of healthy endpoints.
+    """
+    __tablename__ = 'node_health'
+    blockchain_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                      sqlalchemy.ForeignKey('blockchains.id'),
+                                      primary_key=True)
+    unhealthy_total = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    unhealthy_endpoints = sqlalchemy.Column(sqlalchemy.JSON, nullable=False)
+    healthy_total = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
