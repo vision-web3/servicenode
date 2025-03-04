@@ -20,6 +20,7 @@ from vision.common.types import BlockchainAddress
 
 from vision.servicenode.blockchains.base import BlockchainClient
 from vision.servicenode.blockchains.base import BlockchainClientError
+from vision.servicenode.blockchains.middlewares import NodeHealthMiddleware
 from vision.servicenode.database import access as database_access
 
 _HUB_REGISTER_SERVICE_NODE_FUNCTION_SELECTOR = '0x901428b0'
@@ -469,7 +470,9 @@ class EthereumClient(BlockchainClient):
 
     def __create_node_connections(self) -> NodeConnections:
         provider_timeout = self._get_config()['provider_timeout']
-        return self._get_utilities().create_node_connections(provider_timeout)
+        middlewares = [NodeHealthMiddleware]
+        return self._get_utilities().create_node_connections(
+            provider_timeout, middlewares)
 
     def __get_nonce(self, node_connections: NodeConnections,
                     internal_transfer_id: int) -> int:

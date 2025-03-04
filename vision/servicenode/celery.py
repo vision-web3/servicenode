@@ -14,6 +14,7 @@ from vision.common.logging import LogFormat
 from vision.common.logging import initialize_logger
 
 from vision.servicenode.application import initialize_application
+from vision.servicenode.blockchains.middlewares import NodeHealthMiddleware
 from vision.servicenode.configuration import config
 from vision.servicenode.configuration import load_config
 from vision.servicenode.database import get_engine
@@ -25,6 +26,32 @@ _TRANSACTIONS_QUEUE_NAME = 'transactions'
 
 _logger = logging.getLogger(__name__)
 """Logger for this module."""
+
+
+def celery_after_return_handler(self, status, retval, task_id, args, kwargs,
+                                einfo):
+    """Handler for the after_return signal.
+
+    Parameters
+    ----------
+    self : celery.Task
+        Task instance.
+    status : str
+        Current task state.
+    retval : Any
+        Task return value/exception.
+    task_id : str
+        Unique id of the task.
+    args : Tuple
+        Original arguments for the task that returned.
+    kwargs : Dict
+        Original keyword arguments for the task that returned.
+    einfo : ExceptionInfo
+        ExceptionInfo instance, containing the traceback (if any).
+
+    The return value of this handler is ignored.
+    """
+    NodeHealthMiddleware.flush_health_data()
 
 
 def is_main_module() -> bool:
@@ -96,6 +123,9 @@ celery_app.conf.update(
             'queue': _TRANSACTIONS_QUEUE_NAME
         }  # yapf: disable
     },
+    task_annotations={'*': {
+        'after_return': celery_after_return_handler
+    }},
     task_track_started=True,
     worker_enable_remote_control=False,
     # Make sure the broker crashes if it can't connect on startup

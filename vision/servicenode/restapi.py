@@ -2,6 +2,7 @@
 
 """
 import logging
+import re
 import time
 import typing
 import uuid
@@ -23,6 +24,7 @@ from vision.common.restapi import ok_response
 from vision.common.restapi import resource_not_found
 
 from vision.servicenode.blockchains.factory import get_blockchain_client
+from vision.servicenode.blockchains.middlewares import NodeHealthMiddleware
 from vision.servicenode.business.bids import BidInteractor
 from vision.servicenode.business.transfers import SenderNonceNotUniqueError
 from vision.servicenode.business.transfers import TransferInteractor
@@ -452,3 +454,15 @@ _restful_api.add_resource(Live, '/health/live')
 _restful_api.add_resource(_Transfer, '/transfer')
 _restful_api.add_resource(_TransferStatus, '/transfer/<string:task_id>/status')
 _restful_api.add_resource(_Bids, '/bids')
+
+
+@flask_app.teardown_request
+def teardown_request(exception=None) -> None:
+    """Teardown request hook.
+
+    """
+    # No flushing for those paths
+    PATH_REGEX = re.compile(r'^(/health/live|/bids|/transfer/[^/]+/status)$')
+    if PATH_REGEX.match(flask.request.path):
+        return
+    NodeHealthMiddleware.flush_health_data()

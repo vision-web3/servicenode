@@ -16,6 +16,7 @@ from vision.common.signer import get_signer
 from vision.servicenode.blockchains.factory import get_blockchain_client
 from vision.servicenode.blockchains.factory import \
     initialize_blockchain_clients
+from vision.servicenode.blockchains.middlewares import NodeHealthMiddleware
 from vision.servicenode.business.node import NodeInteractor
 from vision.servicenode.configuration import config
 from vision.servicenode.configuration import get_blockchain_config
@@ -39,6 +40,7 @@ def create_application() -> flask.Flask:
     import vision.servicenode.celery  # noqa: F401
     _update_registrations()
     initialize_plugins(start_worker=False)
+    NodeHealthMiddleware.flush_health_data()
     # Imported here to prevent a circular import
     from vision.servicenode.restapi import flask_app
     return flask_app
