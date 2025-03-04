@@ -320,7 +320,7 @@ class Transfer(Base):
     )
 
 
-class NodeHealth(Base):
+class NodesHealth(Base):
     """Model class for the "node_health" database table. Each record in
     the table represents a blockchain with its endpoints being used and their
     overall health status.
@@ -336,7 +336,7 @@ class NodeHealth(Base):
     healthy_total : sqlalchemy.Column
         The total number of healthy endpoints.
     """
-    __tablename__ = 'node_health'
+    __tablename__ = 'nodes_health'
     blockchain_id = sqlalchemy.Column(sqlalchemy.Integer,
                                       sqlalchemy.ForeignKey('blockchains.id'),
                                       primary_key=True)

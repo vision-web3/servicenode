@@ -23,12 +23,44 @@ from vision.servicenode.database.models import Base
 from vision.servicenode.database.models import Bid
 from vision.servicenode.database.models import ForwarderContract
 from vision.servicenode.database.models import HubContract
+from vision.servicenode.database.models import NodesHealth
 from vision.servicenode.database.models import TokenContract
 from vision.servicenode.database.models import Transfer
 
 _logger = logging.getLogger(__name__)
 
 B = typing.TypeVar('B', bound=Base)
+
+
+def update_node_health_data(blockchain: Blockchain, unhealthy_total: int,
+                            unhealthy_endpoints: str,
+                            healthy_total: int) -> None:
+    """Update the node health data in the database.
+
+    Parameters
+    ----------
+    blockchain : Blockchain
+        The blockchain for which the health data is updated.
+    unhealthy_total : int
+        The total number of unhealthy nodes.
+    unhealthy_endpoints : str
+        A list encoded as a JSON string of the unhealthy node endpoints.
+    healthy_total : int
+        The total number of healthy nodes.
+
+    """
+    with get_session_maker().begin() as session:
+        nodes_health = session.get(NodesHealth, blockchain.value)
+        if nodes_health is None:
+            nodes_health = NodesHealth(blockchain_id=blockchain.value,
+                                       unhealthy_total=unhealthy_total,
+                                       unhealthy_endpoints=unhealthy_endpoints,
+                                       healthy_total=healthy_total)
+        else:
+            nodes_health.unhealthy_total = unhealthy_total
+            nodes_health.unhealthy_endpoints = unhealthy_endpoints
+            nodes_health.healthy_total = healthy_total
+        session.add(nodes_health)
 
 
 def create_bid(source_blockchain: Blockchain,

@@ -1,9 +1,11 @@
 import hashlib
+import json
 import logging
 import typing
 import urllib.parse
 
 from vision.servicenode.configuration import get_blockchains_rpc_nodes
+from vision.servicenode.database.access import update_node_health_data
 
 _logger = logging.getLogger(__name__)
 
@@ -49,7 +51,7 @@ class NodeHealthMiddleware():
         """
         node_health_data: typing.Dict[str, typing.Dict[str, typing.Any]] = {}
         for endpoint, data in self._health_data.items():
-            blockchain = data['blockchain'].name
+            blockchain = data['blockchain']
             if blockchain not in node_health_data:
                 node_health_data[blockchain] = {
                     'unhealthy_total': 0,
@@ -62,8 +64,12 @@ class NodeHealthMiddleware():
                 node_health_data[blockchain]['unhealthy_total'] += 1
                 node_health_data[blockchain]['unhealthy_endpoints'].append(
                     endpoint)
-        # TODO: Data needs to be written to DB and we need a model for this
-        _logger.info(f"Node health data: {node_health_data}")
+
+        for blockchain, blockchain_health_data in node_health_data.items():
+            update_node_health_data(
+                blockchain, blockchain_health_data['unhealthy_total'],
+                json.dumps(blockchain_health_data['unhealthy_endpoints']),
+                blockchain_health_data['healthy_total'])
 
     def __obfuscate_endpoint_path(self, url: str) -> str:
         """Obfuscate the path of the URL to be used as a key in the health
