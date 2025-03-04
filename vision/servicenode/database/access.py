@@ -63,6 +63,28 @@ def update_node_health_data(blockchain: Blockchain, unhealthy_total: int,
         session.add(nodes_health)
 
 
+def read_node_health_data(blockchain: Blockchain) -> NodesHealth:
+    """Read the node health data from the database.
+
+    Parameters
+    ----------
+    blockchain : Blockchain
+        The blockchain for which the health data is read.
+
+    Returns
+    -------
+    NodesHealth
+        The node health data.
+
+    """
+    with get_session() as session:
+        nodes_health = session.get(NodesHealth, blockchain.value)
+        if nodes_health is None:
+            return NodesHealth(blockchain_id=blockchain.value)
+        session.expunge(nodes_health)
+        return nodes_health
+
+
 def create_bid(source_blockchain: Blockchain,
                destination_blockchain: Blockchain, execution_time: int,
                valid_until: int, fee: int) -> None:

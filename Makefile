@@ -158,7 +158,7 @@ debian-all: debian debian-full
 
 .PHONY: docker-debian-build
 docker-debian-build:
-	docker buildx build -t vision-service-node-build -f Dockerfile --target dev . --load $(ARGS);
+	docker buildx build -t vision-service-node-build -f Dockerfile --target build-deb . --load $(ARGS);
 	CONTAINER_ID=$$(docker create vision-service-node-build); \
     docker cp $${CONTAINER_ID}:/app/dist/ .; \
     docker rm $${CONTAINER_ID}
