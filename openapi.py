@@ -27,9 +27,9 @@ spec = APISpec("Vision Service Node APISpec", '1.0', "3.0.2", plugins=plugins)
 
 template = spec.to_flasgger(
     flask_app, definitions=[
-        _BidSchema, _BidsSchema,_NodeHealthSchema,
-         _TransferSchema, _TransferResponseSchema,
-        _TransferStatusSchema, _TransferStatusResponseSchema
+        _BidSchema, _BidsSchema, _NodeHealthSchema, _TransferSchema,
+        _TransferResponseSchema, _TransferStatusSchema,
+        _TransferStatusResponseSchema
     ])
 
 swagger = Swagger(flask_app, template=template, parse=True)

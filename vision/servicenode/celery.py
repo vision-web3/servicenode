@@ -51,7 +51,7 @@ def celery_after_return_handler(self, status, retval, task_id, args, kwargs,
 
     The return value of this handler is ignored.
     """
-    NodeHealthMiddleware.flush_health_data()
+    NodeHealthMiddleware.flush_health_data()  # pragma: no cover
 
 
 def is_main_module() -> bool:

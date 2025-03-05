@@ -51,9 +51,10 @@ class _NodeHealthSchema(marshmallow.Schema):
     """
     blockchain = marshmallow.fields.String(required=True)
     unhealthy_total = marshmallow.fields.Integer(required=True)
-    unhealthy_endpoints = marshmallow.fields.List(
-        marshmallow.fields.String(), required=True)
+    unhealthy_endpoints = marshmallow.fields.List(marshmallow.fields.String(),
+                                                  required=True)
     healthy_total = marshmallow.fields.Integer(required=True)
+
 
 class _BidSchema(marshmallow.Schema):
     """Validation schema for a bid within a transfer request.

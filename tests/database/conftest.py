@@ -12,6 +12,7 @@ from vision.servicenode.database.models import Bid
 from vision.servicenode.database.models import Blockchain as Blockchain_
 from vision.servicenode.database.models import ForwarderContract
 from vision.servicenode.database.models import HubContract
+from vision.servicenode.database.models import NodesHealth
 from vision.servicenode.database.models import TokenContract
 from vision.servicenode.database.models import Transfer
 from vision.servicenode.database.models import \
@@ -67,6 +68,7 @@ def tear_down_all_models(session):
     """Delete all rows in all tables.
 
     """
+    session.execute(sqlalchemy.delete(NodesHealth))
     session.execute(sqlalchemy.delete(Transfer))
     session.execute(sqlalchemy.delete(TransferStatus_))
     session.execute(sqlalchemy.delete(Bid))
@@ -108,6 +110,7 @@ def embedded_db_session_maker(embedded_db_engine):
     Bid.__table__.create(embedded_db_engine)
     TransferStatus_.__table__.create(embedded_db_engine)
     Transfer.__table__.create(embedded_db_engine)
+    NodesHealth.__table__.create(embedded_db_engine)
     return sqlalchemy.orm.sessionmaker(bind=embedded_db_engine)
 
 
