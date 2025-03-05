@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1.7.0-labs
 # SPDX-License-Identifier: GPL-3.0-only
-FROM python:3.13-bookworm AS dev
+FROM python:3.13-bookworm AS build-deb
 
 RUN apt-get update && \
     apt-get install build-essential debhelper devscripts \
@@ -37,7 +37,7 @@ FROM bitnami/minideb:bookworm AS prod
 RUN apt-get update
 
 # Do not copy the configurator package
-COPY --from=dev /app/dist/vision-service-node_*.deb .
+COPY --from=build-deb /app/dist/vision-service-node_*.deb .
 
 RUN ARCH=$(dpkg --print-architecture) && \
     PKGS=$(ls ./*-signed.deb 2>/dev/null || ls ./*.deb) && \

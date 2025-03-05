@@ -9,6 +9,7 @@
 .vscode/
 build/
 dist/
+docs/openapi.json
 /local/
 postgresql_data
 rabbitmq_data

@@ -2,6 +2,7 @@
 
 """
 import logging
+import re
 import time
 import typing
 import uuid
@@ -23,7 +24,9 @@ from vision.common.restapi import ok_response
 from vision.common.restapi import resource_not_found
 
 from vision.servicenode.blockchains.factory import get_blockchain_client
+from vision.servicenode.blockchains.middlewares import NodeHealthMiddleware
 from vision.servicenode.business.bids import BidInteractor
+from vision.servicenode.business.health import HealthInteractor
 from vision.servicenode.business.transfers import SenderNonceNotUniqueError
 from vision.servicenode.business.transfers import TransferInteractor
 from vision.servicenode.business.transfers import \
@@ -40,6 +43,17 @@ flask_cors.CORS(flask_app)
 
 _logger = logging.getLogger(__name__)
 """Logger for this module."""
+
+
+class _NodeHealthSchema(marshmallow.Schema):
+    """Validation schema for the node health status.
+
+    """
+    blockchain = marshmallow.fields.String(required=True)
+    unhealthy_total = marshmallow.fields.Integer(required=True)
+    unhealthy_endpoints = marshmallow.fields.List(marshmallow.fields.String(),
+                                                  required=True)
+    healthy_total = marshmallow.fields.Integer(required=True)
 
 
 class _BidSchema(marshmallow.Schema):
@@ -446,9 +460,56 @@ destination blockchain
         return ok_response(bids)
 
 
+class _NodesHealth(flask_restful.Resource):
+    """RESTful resource for the nodes health status request.
+
+    """
+    def get(self) -> flask.Response:
+        """
+        Endpoint that returns a list of blockchain nodes health status.
+        ---
+        tags:
+          - Nodes Health
+        responses:
+          200:
+            description: List of health status for all supported blockchains \
+by the service node
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/_NodeHealth'
+          500:
+            description: 'internal server error'
+        """
+        try:
+            health_data = HealthInteractor(
+            ).get_blockchain_nodes_health_status()
+        except Exception:
+            _logger.critical('unable to process a nodes health status request',
+                             exc_info=True)
+            internal_server_error()
+
+        return ok_response(health_data)
+
+
 # Register the RESTful resources
 _restful_api = flask_restful.Api(flask_app)
 _restful_api.add_resource(Live, '/health/live')
+_restful_api.add_resource(_NodesHealth, '/health/nodes')
 _restful_api.add_resource(_Transfer, '/transfer')
 _restful_api.add_resource(_TransferStatus, '/transfer/<string:task_id>/status')
 _restful_api.add_resource(_Bids, '/bids')
+
+
+@flask_app.teardown_request
+def teardown_request(exception=None) -> None:
+    """Teardown request hook.
+
+    """
+    # No flushing for those paths since no blockchain touching
+    PATH_REGEX = re.compile(r'^(/health/live|/bids|/transfer/[^/]+/status)$')
+    if PATH_REGEX.match(flask.request.path):
+        return
+    NodeHealthMiddleware.flush_health_data()

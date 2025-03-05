@@ -158,7 +158,7 @@ debian-all: debian debian-full
 
 .PHONY: docker-debian-build
 docker-debian-build:
-	docker buildx build -t vision-service-node-build -f Dockerfile --target dev . --load $(ARGS);
+	docker buildx build -t vision-service-node-build -f Dockerfile --target build-deb . --load $(ARGS);
 	CONTAINER_ID=$$(docker create vision-service-node-build); \
     docker cp $${CONTAINER_ID}:/app/dist/ .; \
     docker rm $${CONTAINER_ID}
@@ -180,7 +180,7 @@ signer-key:
 	if [ -z "$$SIGNER_KEY" ]; then \
 		SIGNER_KEY=""; \
 	fi; \
-    if ssh-keygen -t ed25519 -f "$$SIGNER_KEY_FILE" -N "$$SIGNER_KEY"; then \
+    if ssh-keygen -t ed25519 -m PEM -f "$$SIGNER_KEY_FILE" -N "$$SIGNER_KEY"; then \
         echo "SSH key generated successfully at $$SIGNER_KEY_FILE"; \
     else \
         echo "Failed to generate SSH key"; \
@@ -218,7 +218,8 @@ local-common:
 ifndef DEV_VISION_COMMON
 	$(error Please define DEV_VISION_COMMON variable)
 endif
-	$(eval CURRENT_COMMON := $(shell echo .venv/lib/python3.*/site-packages/vision/common))
+	$(eval PYTHON_VERSION := $(shell poetry run python --version | awk '{print $$2}' | cut -d. -f1,2))
+	$(eval CURRENT_COMMON := $(shell poetry env list --full-path | grep -v "^\*" | head -1 | awk '{print $$1}')/lib/python$(PYTHON_VERSION)/site-packages/vision/common)
 	@if [ -d "$(CURRENT_COMMON)" ]; then \
 		rm -rf "$(CURRENT_COMMON)"; \
 		ln -s "$(DEV_VISION_COMMON)" "$(CURRENT_COMMON)"; \

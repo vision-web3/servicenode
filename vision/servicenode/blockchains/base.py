@@ -684,7 +684,7 @@ class BlockchainClient(BlockchainHandler, ErrorCreator[BlockchainClientError]):
             If the commitment wait period cannot be obtained.
 
         """
-        pass
+        pass  # pragma: no cover
 
     @abc.abstractmethod
     def get_validator_fee_factor(self, blockchain: Blockchain) -> int:
