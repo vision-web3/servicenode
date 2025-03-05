@@ -3915,15 +3915,15 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 
 [[package]]
 name = "vision-common"
-version = "0.1.1"
+version = "0.2.0"
 description = "Common code for Vision-web3 off-chain components."
 optional = false
 python-versions = "<4.0,>=3.13"
 groups = ["main"]
 markers = "implementation_name == \"cpython\" or implementation_name == \"pypy\""
 files = [
-    {file = "vision_common-0.1.1-py3-none-any.whl", hash = "sha256:34a7002d19e92a4cdfe00a36c797e8e12a70235d467a41d5694a8fb1650d4c1f"},
-    {file = "vision_common-0.1.1.tar.gz", hash = "sha256:d6d8e51c50e85b99b57ddea7c99a4ff8331c257c5d4d4bfb4595158bc9e98310"},
+    {file = "vision_common-0.2.0-py3-none-any.whl", hash = "sha256:240aa4303f9fc7d90e198b25ffdb9c05da9fddbf7e596db1250db83e5f3101ff"},
+    {file = "vision_common-0.2.0.tar.gz", hash = "sha256:12f6c9bc36460d0934ad08820f2261e48f262fce23a9aeaed853b57d250a3fdc"},
 ]
 
 [package.dependencies]
@@ -3979,7 +3979,6 @@ prompt-toolkit = {version = "3.0.50", markers = "python_version >= \"3.13\" and 
 propcache = {version = "0.2.1", markers = "python_version >= \"3.13\" and python_version < \"4.0\""}
 protobuf = {version = "5.29.3", markers = "python_version >= \"3.13\" and python_version < \"4.0\""}
 py-ecc = {version = "6.0.0", markers = "python_version >= \"3.13\" and python_version < \"4\""}
-pyaml-env = {version = "1.2.1", markers = "python_version >= \"3.13\" and python_version < \"4.0\""}
 pycryptodome = {version = "3.20.0", markers = "python_version >= \"3.13\" and python_version < \"4.0\""}
 pydantic = {version = "2.10.6", markers = "python_version >= \"3.13\" and python_version < \"4\""}
 pydantic-core = {version = "2.27.2", markers = "python_version >= \"3.13\" and python_version < \"4\""}
@@ -4273,4 +4272,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "dc2419fdb3f8ea4438551ee0286a2021506fb74317cbbb57eea043690d1801ca"
+content-hash = "d5d50432639144c03f7b5fcf10498b0efbb71ffe10499e2f27642432da0964f3"
