@@ -10,10 +10,13 @@ from vision.servicenode.database.enums import TransferStatus
 from vision.servicenode.database.models import Base
 from vision.servicenode.database.models import Bid
 from vision.servicenode.database.models import Blockchain as Blockchain_
+from vision.servicenode.database.models import BlockchainType
+from vision.servicenode.database.models import EVMTransactions
 from vision.servicenode.database.models import ForwarderContract
 from vision.servicenode.database.models import HubContract
 from vision.servicenode.database.models import NodesHealth
 from vision.servicenode.database.models import TokenContract
+from vision.servicenode.database.models import Transactions
 from vision.servicenode.database.models import Transfer
 from vision.servicenode.database.models import \
     TransferStatus as TransferStatus_
@@ -76,6 +79,9 @@ def tear_down_all_models(session):
     session.execute(sqlalchemy.delete(HubContract))
     session.execute(sqlalchemy.delete(TokenContract))
     session.execute(sqlalchemy.delete(Blockchain_))
+    session.execute(sqlalchemy.delete(BlockchainType))
+    session.execute(sqlalchemy.delete(Transactions))
+    session.execute(sqlalchemy.delete(EVMTransactions))
 
     session.commit()
 
@@ -111,6 +117,10 @@ def embedded_db_session_maker(embedded_db_engine):
     TransferStatus_.__table__.create(embedded_db_engine)
     Transfer.__table__.create(embedded_db_engine)
     NodesHealth.__table__.create(embedded_db_engine)
+    BlockchainType.__table__.create(embedded_db_engine)
+    Transactions.__table__.create(embedded_db_engine)
+    EVMTransactions.__table__.create(embedded_db_engine)
+
     return sqlalchemy.orm.sessionmaker(bind=embedded_db_engine)
 
 

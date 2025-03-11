@@ -13,9 +13,12 @@ from sqlalchemy.orm import Session
 from vision.common.blockchains.enums import Blockchain
 
 from vision.servicenode.configuration import config
+from vision.servicenode.database.enums import BlockchainType
 from vision.servicenode.database.enums import TransferStatus
 from vision.servicenode.database.exceptions import DatabaseError
 from vision.servicenode.database.models import Blockchain as Blockchain_
+from vision.servicenode.database.models import \
+    BlockchainType as BlockchainType_
 from vision.servicenode.database.models import \
     TransferStatus as TransferStatus_
 
@@ -116,6 +119,9 @@ def initialize_package(is_flask_app: bool = False) -> None:
                         or max_blockchain_id < blockchain.value):
                     session.add(
                         Blockchain_(id=blockchain.value, name=blockchain.name))
+            for blockchain_type in sorted(BlockchainType):
+                session.add(BlockchainType_(id=blockchain_type.value,
+                                            name=blockchain_type.name))
             # Transfer status table
             statement = sqlalchemy.select(
                 sqlalchemy.func.max(TransferStatus_.id))

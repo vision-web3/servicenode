@@ -384,11 +384,11 @@ class Transactions(Base):
         The ID of the transfer status (foreign key).
     fee : sqlalchemy.Column(sqlalchemy.Integer)
         The fee paid for the transaction.
-    raw_data : sqlalchemy.Column(sqlalchemy.JSONB)
+    raw_data : sqlalchemy.Column(sqlalchemy.JSON)
         The raw data of the transaction if required.
 
     """
-    __table__name = "transactions"
+    __tablename__ = "transactions"
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     blockchain_type = sqlalchemy.Column(sqlalchemy.Integer,
@@ -402,7 +402,7 @@ class Transactions(Base):
                                   sqlalchemy.ForeignKey('transfer_status.id'),
                                   nullable=False)
     fee = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
-    raw_data = sqlalchemy.Column(sqlalchemy.JSONB)
+    raw_data = sqlalchemy.Column(sqlalchemy.JSON)
 
 
 class EVMTransactions(Base):
