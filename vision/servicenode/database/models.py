@@ -391,10 +391,9 @@ class Transactions(Base):
     __tablename__ = "transactions"
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-    blockchain_type = sqlalchemy.Column(sqlalchemy.Integer,
-                                        sqlalchemy.ForeignKey(
-                                            'blockchain_types.id'),
-                                        nullable=False)
+    blockchain_type = sqlalchemy.Column(
+        sqlalchemy.Integer, sqlalchemy.ForeignKey('blockchain_types.id'),
+        nullable=False)
     tx_id = sqlalchemy.Column(sqlalchemy.Text, unique=True, nullable=False)
     block_number = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
     timestamp = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False)
@@ -437,10 +436,9 @@ class EVMTransactions(Base):
     """
     __tablename__ = "evm_transactions"
 
-    transaction_id = sqlalchemy.Column(sqlalchemy.Integer,
-                                       sqlalchemy.ForeignKey(
-                                            'transactions.id'),
-                                       primary_key=True)
+    transaction_id = sqlalchemy.Column(
+        sqlalchemy.Integer, sqlalchemy.ForeignKey('transactions.id'),
+        primary_key=True)
     from_address = sqlalchemy.Column(sqlalchemy.Text, nullable=False)
     to_address = sqlalchemy.Column(sqlalchemy.Text)
     value = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)

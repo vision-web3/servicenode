@@ -21,37 +21,40 @@ def upgrade() -> None:
                     sa.Column('id', sa.Integer(), nullable=False),
                     sa.Column('name', sa.Text(), nullable=False),
                     sa.PrimaryKeyConstraint('id'))
-    op.create_table('transactions',
-                    sa.Column('id', sa.Integer(), nullable=False),
-                    sa.Column('blockchain_type', sa.Integer(), nullable=False),
-                    sa.Column('tx_id', sa.Text(), nullable=False),
-                    sa.Column('block_number', sa.Integer(), nullable=False),
-                    sa.Column('timestamp', sa.DateTime(), nullable=False),
-                    sa.Column('status_id', sa.Integer(), nullable=False),
-                    sa.Column('fee', sa.Integer(), nullable=False),
-                    sa.Column('raw_data', sa.JSON(), nullable=True),
-                    sa.ForeignKeyConstraint(['blockchain_type'],
-                                            ['blockchain_types.id'], ),
-                    sa.ForeignKeyConstraint(['status_id'],
-                                            ['transfer_status.id'], ),
-                    sa.PrimaryKeyConstraint('id'),
-                    sa.UniqueConstraint('tx_id'))
-    op.create_table('evm_transactions',
-                    sa.Column('transaction_id', sa.Integer(), nullable=False),
-                    sa.Column('from_address', sa.Text(), nullable=False),
-                    sa.Column('to_address', sa.Text(), nullable=True),
-                    sa.Column('value', sa.Integer(), nullable=False),
-                    sa.Column('nonce', sa.BigInteger(), nullable=True),
-                    sa.Column('input_data', sa.Text(), nullable=True),
-                    sa.Column('chain_id', sa.Integer(), nullable=False),
-                    sa.Column('max_fee_per_gas', sa.Integer(), nullable=False),
-                    sa.Column('max_priority_fee_per_gas', sa.Integer(),
-                              nullable=True),
-                    sa.Column('gas_limit', sa.Integer(), nullable=False),
-                    sa.Column('signature', sa.Text(), nullable=False),
-                    sa.ForeignKeyConstraint(['transaction_id'],
-                                            ['transactions.id'], ),
-                    sa.PrimaryKeyConstraint('transaction_id'))
+    op.create_table(
+        'transactions', sa.Column('id', sa.Integer(), nullable=False),
+        sa.Column('blockchain_type', sa.Integer(), nullable=False),
+        sa.Column('tx_id', sa.Text(), nullable=False),
+        sa.Column('block_number', sa.Integer(), nullable=False),
+        sa.Column('timestamp', sa.DateTime(), nullable=False),
+        sa.Column('status_id', sa.Integer(), nullable=False),
+        sa.Column('fee', sa.Integer(), nullable=False),
+        sa.Column('raw_data', sa.JSON(), nullable=True),
+        sa.ForeignKeyConstraint(
+            ['blockchain_type'],
+            ['blockchain_types.id'],
+        ), sa.ForeignKeyConstraint(
+            ['status_id'],
+            ['transfer_status.id'],
+        ), sa.PrimaryKeyConstraint('id'), sa.UniqueConstraint('tx_id'))
+    op.create_table(
+        'evm_transactions',
+        sa.Column('transaction_id', sa.Integer(), nullable=False),
+        sa.Column('from_address', sa.Text(), nullable=False),
+        sa.Column('to_address', sa.Text(), nullable=True),
+        sa.Column('value', sa.Integer(), nullable=False),
+        sa.Column('nonce', sa.BigInteger(), nullable=True),
+        sa.Column('input_data', sa.Text(), nullable=True),
+        sa.Column('chain_id', sa.Integer(), nullable=False),
+        sa.Column('max_fee_per_gas', sa.Integer(), nullable=False),
+        sa.Column('max_priority_fee_per_gas', sa.Integer(),
+                    nullable=True),
+        sa.Column('gas_limit', sa.Integer(), nullable=False),
+        sa.Column('signature', sa.Text(), nullable=False),
+        sa.ForeignKeyConstraint(
+            ['transaction_id'],
+            ['transactions.id'],
+        ), sa.PrimaryKeyConstraint('transaction_id'))
     # ### end Alembic commands ###
 
 
