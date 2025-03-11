@@ -47,8 +47,7 @@ def upgrade() -> None:
         sa.Column('input_data', sa.Text(), nullable=True),
         sa.Column('chain_id', sa.Integer(), nullable=False),
         sa.Column('max_fee_per_gas', sa.Integer(), nullable=False),
-        sa.Column('max_priority_fee_per_gas', sa.Integer(),
-                    nullable=True),
+        sa.Column('max_priority_fee_per_gas', sa.Integer(), nullable=True),
         sa.Column('gas_limit', sa.Integer(), nullable=False),
         sa.Column('signature', sa.Text(), nullable=False),
         sa.ForeignKeyConstraint(
