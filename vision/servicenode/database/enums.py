@@ -34,3 +34,10 @@ class TransferStatus(enum.IntEnum):
         """
         return (self if self.value < _NEW_NONCE_ASSIGNED_OFFSET else
                 TransferStatus(self.value - _NEW_NONCE_ASSIGNED_OFFSET))
+
+
+class BlockchainType(enum.IntEnum):
+    """Enumeration of possible blockchain type values.
+
+    """
+    EVM = 0

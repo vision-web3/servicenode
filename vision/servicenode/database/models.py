@@ -343,3 +343,111 @@ class NodesHealth(Base):
     unhealthy_total = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
     unhealthy_endpoints = sqlalchemy.Column(sqlalchemy.JSON, nullable=False)
     healthy_total = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+
+
+class BlockchainType(Base):
+    """Model class for the "blockchain_types" database table. Each record in
+    the table represents a blockchain type supported by Vision.
+
+    Attributes
+    ----------
+    id : sqlalchemy.Column
+        The unique blockchain type ID (primary key).
+    name : sqlalchemy.Column
+        The blockchain type's name.
+
+    """
+    __tablename__ = 'blockchain_types'
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    name = sqlalchemy.Column(sqlalchemy.Text, nullable=False)
+
+
+class Transactions(Base):
+    """Model class for the "transactions" database table. Each record in the
+    table represents a transaction on a blockchain and some general data.
+    This table has to be combine with a more specific table for each blockchain
+    type.
+
+    Attributes
+    ----------
+    id : sqlalchemy.Column(sqlalchemy.Integer)
+        The unique transaction ID (primary key).
+    blockchain_type : sqlalchemy.Column(sqlalchemy.Integer)
+        The type of blockchain the transaction is on.
+    tx_id : sqlalchemy.Column(sqlalchemy.Text)
+        The unique transaction ID/hash of the blockchain.
+    block_number : sqlalchemy.Column(sqlalchemy.Integer)
+        The block number of the transaction.
+    timestamp : sqlalchemy.Column(sqlalchemy.DateTime)
+        The timestamp of the transaction.
+    status_id : sqlalchemy.Column(sqlalchemy.Integer)
+        The ID of the transfer status (foreign key).
+    fee : sqlalchemy.Column(sqlalchemy.Integer)
+        The fee paid for the transaction.
+    raw_data : sqlalchemy.Column(sqlalchemy.JSONB)
+        The raw data of the transaction if required.
+
+    """
+    __table__name = "transactions"
+
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    blockchain_type = sqlalchemy.Column(sqlalchemy.Integer,
+                                        sqlalchemy.ForeignKey(
+                                            'blockchain_types.id'),
+                                        nullable=False)
+    tx_id = sqlalchemy.Column(sqlalchemy.Text, unique=True, nullable=False)
+    block_number = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    timestamp = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False)
+    status_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                  sqlalchemy.ForeignKey('transfer_status.id'),
+                                  nullable=False)
+    fee = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    raw_data = sqlalchemy.Column(sqlalchemy.JSONB)
+
+
+class EVMTransactions(Base):
+    """Model class for the "evm_transactions" database table. Each record in
+    the table represents a transaction on an EVM-based blockchain.
+
+    Attributes
+    ----------
+    transaction_id : sqlalchemy.Column(sqlalchemy.Integer)
+        The unique transaction ID (primary key).
+    from_address : sqlalchemy.Column(sqlalchemy.Text)
+        The address of the sender.
+    to_address : sqlalchemy.Column(sqlalchemy.Text)
+        The address of the recipient.
+    value : sqlalchemy.Column(sqlalchemy.Integer)
+        The value of the transaction.
+    nonce : sqlalchemy.Column(sqlalchemy.BigInteger)
+        The nonce of the transaction.
+    input_data : sqlalchemy.Column(sqlalchemy.Text)
+        The input data of the transaction.
+    chain_id : sqlalchemy.Column(sqlalchemy.Integer)
+        The chain ID of the blockchain where the transaction is send.
+    max_fee_per_gas : sqlalchemy.Column(sqlalchemy.Integer)
+        The absolute maximum fee per gas.
+    max_priority_fee_per_gas : sqlalchemy.Column(sqlalchemy.Integer)
+        The maximum priority fee per gas.
+    gas_limit : sqlalchemy.Column(sqlalchemy.Integer)
+        The gas limit of the transaction.
+    signature : sqlalchemy.Column(sqlalchemy.Text)
+        The signature of the transaction.
+
+    """
+    __tablename__ = "evm_transactions"
+
+    transaction_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                       sqlalchemy.ForeignKey(
+                                            'transactions.id'),
+                                       primary_key=True)
+    from_address = sqlalchemy.Column(sqlalchemy.Text, nullable=False)
+    to_address = sqlalchemy.Column(sqlalchemy.Text)
+    value = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    nonce = sqlalchemy.Column(sqlalchemy.BigInteger)
+    input_data = sqlalchemy.Column(sqlalchemy.Text)
+    chain_id = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    max_fee_per_gas = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    max_priority_fee_per_gas = sqlalchemy.Column(sqlalchemy.Integer)
+    gas_limit = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    signature = sqlalchemy.Column(sqlalchemy.Text, nullable=False)
