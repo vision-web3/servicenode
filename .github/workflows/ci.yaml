@@ -150,8 +150,6 @@ jobs:
         with:
           repository: vision-web3-foundation/ethereum-contracts
           path: ethereum-contracts
-          # !!!! Following line MUST be removed
-          token: ${{ secrets.GH_TOKEN }}
           sparse-checkout: |
            Makefile
            docker-compose.yml
@@ -347,5 +345,4 @@ jobs:
         with:
           servicenode-path: ${{ env.VISION_SERVICE_NODE }}
           servicenode-version: 'local'
-          token: ${{ secrets.GH_TOKEN }}
 
