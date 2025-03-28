@@ -63,7 +63,7 @@ jobs:
             - name: Scan vulnerabilities app image
               uses: aquasecurity/trivy-action@18f2510ee396bbf400402947b394f2dd8c87dbb0 # v0.29.0
               with:           
-                image-ref: 'visionio/service-node-app:analysis-latest'
+                image-ref: 'vision-web3-foundation/service-node-app:analysis-latest'
                 format: 'sarif'
                 output: 'trivy-app-results.sarif'
                 severity: 'CRITICAL,HIGH'
@@ -79,7 +79,7 @@ jobs:
             - name: Scan vulnerabilities worker image
               uses: aquasecurity/trivy-action@18f2510ee396bbf400402947b394f2dd8c87dbb0 # v0.29.0
               with:           
-                image-ref: 'visionio/service-node-worker:analysis-latest'
+                image-ref: 'vision-web3-foundation/service-node-worker:analysis-latest'
                 format: 'sarif'
                 output: 'trivy-worker-results.sarif'
                 severity: 'CRITICAL,HIGH'
