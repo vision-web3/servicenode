@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/vision-web3-foundation/servicenode/img/vision-logo-full.svg" alt="Vision logo" align="right" width="120" />
+<img src="https://raw.githubusercontent.com/vision-web3-foundation/servicenode/img/vision-logo.png" alt="Vision logo" align="right" width="120" />
 
 [![CI](https://github.com/vision-web3-foundation/servicenode/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/vision-web3-foundation/servicenode/actions/workflows/ci.yaml) 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vision-web3-foundation_servicenode&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vision-web3-foundation_servicenode)
