@@ -1,7 +1,7 @@
-<img src="https://raw.githubusercontent.com/vision-web3-foundation/servicenode/img/vision-logo-full.svg" alt="Vision logo" align="right" width="120" />
+<img src="https://raw.githubusercontent.com/vision-web3/servicenode/img/vision-logo.png" alt="Vision logo" align="right" width="120" />
 
-[![CI](https://github.com/vision-web3-foundation/servicenode/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/vision-web3-foundation/servicenode/actions/workflows/ci.yaml) 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vision-web3-foundation_servicenode&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vision-web3-foundation_servicenode)
+[![CI](https://github.com/vision-web3/servicenode/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/vision-web3/servicenode/actions/workflows/ci.yaml) 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vision-web3_servicenode&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vision-web3_servicenode)
 
 
 
@@ -49,20 +49,20 @@ There are two ways to install the apps using pre-built packages:
 
 #### Debian package distribution
 
-We provide Debian packages alongside every release, you can find them in the [releases tab](https://github.com/vision-web3-foundation/servicenode/releases). Further information on how to use the service node packages can be found [here](https://vision.gitbook.io/technical-documentation/general/service-node).
+We provide Debian packages alongside every release, you can find them in the [releases tab](https://github.com/vision-web3/servicenode/releases). Further information on how to use the service node packages can be found [here](https://vision.gitbook.io/technical-documentation/general/service-node).
 
 We have a PPA hosted on GitHub, which can be accessed as follows:
 
 ```bash
-curl -s --compressed "https://vision-web3-foundation.github.io/servicenode/KEY.gpg" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/servicenode.gpg >/dev/null
-sudo curl -s --compressed -o /etc/apt/sources.list.d/vision-servicenode.list "https://vision-web3-foundation.github.io/servicenode/vision-servicenode.list"
+curl -s --compressed "https://vision-web3.github.io/servicenode/KEY.gpg" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/servicenode.gpg >/dev/null
+sudo curl -s --compressed -o /etc/apt/sources.list.d/vision-servicenode.list "https://vision-web3.github.io/servicenode/vision-servicenode.list"
 sudo apt update
 sudo apt install vision-service-node
 ```
 
 #### Docker images
 
-We also distribute docker images in DockerHub with each release. These are made available under the visionio project as either [**app**](https://hub.docker.com/r/visionweb3foundation/service-node-app) or [**worker**](https://hub.docker.com/r/visionweb3foundation/service-node-worker).
+We also distribute docker images in DockerHub with each release. These are made available under the visionio project as either [**app**](https://hub.docker.com/r/vsnw3/service-node-app) or [**worker**](https://hub.docker.com/r/vsnw3/service-node-worker).
 
 ##### Local Setup
 

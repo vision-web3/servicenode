@@ -7,13 +7,13 @@ on:
 jobs:
   build:
     name: Build and attach .deb and .whl package
-    if: github.repository == 'vision-web3-foundation/servicenode'
+    if: github.repository == 'vision-web3/servicenode'
     uses: ./.github/workflows/build.yml
     secrets: 'inherit'
 
   publish-docker:
     uses: ./.github/workflows/publish-docker.yaml
-    if: github.repository == 'vision-web3-foundation/servicenode'
+    if: github.repository == 'vision-web3/servicenode'
     needs: build
     secrets: 'inherit'
     with:
@@ -23,5 +23,5 @@ jobs:
 
   test:
     needs: publish-docker
-    uses: vision-web3-foundation/e2e-testing/.github/workflows/ci.yaml@main
+    uses: vision-web3/e2e-testing/.github/workflows/ci.yaml@main
     secrets: 'inherit'
