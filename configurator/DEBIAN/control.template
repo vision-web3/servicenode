@@ -1,7 +1,7 @@
 Source: vision-service-node-full
 Section: contrib/python
 Priority: extra
-Maintainer: Vision GmbH <contact@vision.io>
+Maintainer: Vision GmbH <XXX@XXX>
 Standards-Version: 3.9.5
 Homepage: https://github.com/vision-web3/servicenode
 Package: vision-service-node-full

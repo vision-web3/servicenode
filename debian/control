@@ -1,7 +1,7 @@
 Source: vision-service-node
 Section: contrib/python
 Priority: extra
-Maintainer: Vision GmbH <contact@vision.io>
+Maintainer: Vision GmbH <XXX@XXX>
 Build-Depends: debhelper-compat (= 12), python3, python3-dev, dh-virtualenv (>= 1.1), python3-venv, tar, dh-sysuser, dh-exec
 Standards-Version: 3.9.5
 Homepage: https://github.com/vision-web3/servicenode

@@ -2,7 +2,7 @@
 name = "vision-service-node"
 version = "0.1.0"
 description = "Vision Service Node (reference implementation)"
-authors = ["Vision GmbH <contact@vision.io>"]
+authors = ["Vision <XXX@XXX>"]
 license = "GPL-3.0-only"
 readme = "README.md"
 packages = [
