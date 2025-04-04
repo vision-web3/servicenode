@@ -18,8 +18,8 @@ namespaces = true
 pytest = "8.3.5"
 pytest-cov = "6.1.0"
 pytest-mock = "3.14.0"
-eth-tester = "0.9.0b1"
-web3 = {extras = ["tester"], version = "^6.5.0"}
+eth-tester = "0.12.1b1"
+web3 = {extras = ["tester"], version = "7.10.0"}
 
 [tool.poetry.group.lint.dependencies]
 bandit = "1.8.3"
@@ -41,7 +41,7 @@ flasgger = "^0.9.7.1"
 
 [tool.poetry.dependencies]
 python = "^3.13"
-vision-common = "0.2.0"
+vision-common = "0.3.1"
 alembic = "1.15.2"
 celery = "5.3.1"
 Cerberus = "1.3.4"
