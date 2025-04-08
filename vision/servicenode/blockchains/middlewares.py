@@ -99,12 +99,12 @@ class NodeHealthMiddleware(Web3Middleware):
         def middleware(method, params):
             try:
                 response = make_request(method, params)
-                _logger.info(self._w3.provider.endpoint_uri)
             except Exception as e:
                 obfuscated_endpoint = self.__obfuscate_endpoint_path(
-                    self._w3.provider.endpoint_uri)
+                    self._w3.provider.endpoint_uri)  # type: ignore 
                 if obfuscated_endpoint in self._health_data:
-                    self._health_data[obfuscated_endpoint]['is_healthy'] = False
+                    self._health_data[obfuscated_endpoint][
+                        'is_healthy'] = False
                 raise e
             return response
 
