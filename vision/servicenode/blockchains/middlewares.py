@@ -101,7 +101,7 @@ class NodeHealthMiddleware(Web3Middleware):
                 response = make_request(method, params)
             except Exception as e:
                 obfuscated_endpoint = self.__obfuscate_endpoint_path(
-                    self._w3.provider.endpoint_uri)  # type: ignore 
+                    self._w3.provider.endpoint_uri)  # type: ignore
                 if obfuscated_endpoint in self._health_data:
                     self._health_data[obfuscated_endpoint][
                         'is_healthy'] = False
