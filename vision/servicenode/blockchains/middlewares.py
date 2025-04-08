@@ -4,13 +4,15 @@ import logging
 import typing
 import urllib.parse
 
+from web3.middleware import Web3Middleware
+
 from vision.servicenode.configuration import get_blockchains_rpc_nodes
 from vision.servicenode.database.access import update_node_health_data
 
 _logger = logging.getLogger(__name__)
 
 
-class NodeHealthMiddleware():
+class NodeHealthMiddleware(Web3Middleware):
     """Middleware to monitor the health of the blockchain nodes.
 
     This middleware is used to monitor the health of the blockchain nodes
@@ -18,13 +20,6 @@ class NodeHealthMiddleware():
     health of the nodes and to flush the data to the database.
     """
     _health_data: typing.Dict[str, typing.Dict[str, typing.Any]] = {}
-
-    def __init__(self, make_request=None, w3=None):
-        self.make_request = make_request
-        self.w3 = w3
-        obfuscated_endpoint = self.__obfuscate_endpoint_path(
-            w3.provider.endpoint_uri)
-        self.add_blockchain_endpoint(obfuscated_endpoint)
 
     def add_blockchain_endpoint(self, endpoint_uri: str):
         """Add a blockchain endpoint to the health data.
@@ -100,15 +95,17 @@ class NodeHealthMiddleware():
             obfuscated_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
         return obfuscated_url
 
-    def __call__(self, method, params):
-        # perform the RPC request, getting the response
-        try:
-            response = self.make_request(method, params)
-        except Exception as e:
-            obfuscated_endpoint = self.__obfuscate_endpoint_path(
-                self.w3.provider.endpoint_uri)
-            if obfuscated_endpoint in self._health_data:
-                self._health_data[obfuscated_endpoint]['is_healthy'] = False
-            raise e
-        # finally return the response
-        return response
+    def wrap_make_request(self, make_request):
+        def middleware(method, params):
+            try:
+                response = make_request(method, params)
+                _logger.info(self._w3.provider.endpoint_uri)
+            except Exception as e:
+                obfuscated_endpoint = self.__obfuscate_endpoint_path(
+                    self._w3.provider.endpoint_uri)
+                if obfuscated_endpoint in self._health_data:
+                    self._health_data[obfuscated_endpoint]['is_healthy'] = False
+                raise e
+            return response
+
+        return middleware
