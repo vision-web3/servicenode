@@ -16,7 +16,7 @@ namespaces = true
 
 [tool.poetry.group.test.dependencies]
 pytest = "8.3.5"
-pytest-cov = "6.1.0"
+pytest-cov = "6.1.1"
 pytest-mock = "3.14.0"
 eth-tester = "0.12.1b1"
 web3 = {extras = ["tester"], version = "7.10.0"}
