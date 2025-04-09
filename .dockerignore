@@ -15,7 +15,7 @@ rabbitmq_data
 Dockerfile
 docker-compose*
 .dockerignore
-signer_key*
+# signer_key*
 *docker.env
 .github/
 export
