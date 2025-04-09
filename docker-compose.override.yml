@@ -9,14 +9,19 @@ services:
     networks:
       vision-service-node:
       vision-ethereum:
-    entrypoint: sh -c 'set -a; . /etc/vision/eth-data/ETHEREUM.env && . /etc/vision/bnb-data/BNB_CHAIN.env; set +a; exec /usr/bin/vision-service-node-server'
-    environment:
-      VISION_ENV_FILE: /etc/vision/service-node-config.env
-      APP_URL: http://localhost:808${INSTANCE-1}
-      BNB_CHAIN_PRIVATE_KEY: /etc/vision/bnb-data/keystore
-      ETHEREUM_PRIVATE_KEY: /etc/vision/eth-data/keystore
+    entrypoint: sh -c 'set -a; . /etc/vision/eth-data/ETHEREUM.env && . /etc/vision/bnb-data/BNB_CHAIN.env; set +a; /usr/bin/vision-service-node-dev-entrypoint.sh'
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: servicenode-dev
+      x-bake:
+        tags:
+          - ${DOCKER_REGISTRY-visionweb3foundation}/service-node-app:${DOCKER_TAG-local}
+          - ${DOCKER_REGISTRY-visionweb3foundation}/service-node-app:${EXTRA_TAG-local}
+    env_file:
+      - service-node-config.dev.env
     healthcheck:
-      test: ["CMD-SHELL", "set -a; . /etc/vision/eth-data/ETHEREUM.env && . /etc/vision/bnb-data/BNB_CHAIN.env; set +a; exec /usr/bin/vision-service-node-server --status"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/live"]
       interval: 5s
       timeout: 10s
       retries: 3
@@ -43,20 +48,27 @@ services:
         - action: sync+restart
           path: service-node-config.docker.env
           target: /root/service-node-config.docker.env
+        - action: sync+restart
+          path: ./vision
+          target: ./vision
 
   worker:
     networks:
       vision-service-node:
       vision-ethereum:
-    entrypoint: sh -c 'set -a; . /etc/vision/eth-data/ETHEREUM.env && . /etc/vision/bnb-data/BNB_CHAIN.env; set +a; exec /usr/bin/vision-service-node-celery'
-    environment:
-      VISION_ENV_FILE: /etc/vision/service-node-config.env
-      APP_URL: http://localhost:808${INSTANCE-1}
-      BNB_CHAIN_PRIVATE_KEY: /etc/vision/bnb-data/keystore
-      ETHEREUM_PRIVATE_KEY: /etc/vision/eth-data/keystore
-      VISION_STATUS_MONITOR: 1
+    entrypoint: sh -c 'set -a; . /etc/vision/eth-data/ETHEREUM.env && . /etc/vision/bnb-data/BNB_CHAIN.env; set +a; /usr/bin/vision-service-node-worker.sh'
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: servicenode-worker-dev
+      x-bake:
+        tags:
+          - ${DOCKER_REGISTRY-visionweb3foundation}/service-node-app:${DOCKER_TAG-local}
+          - ${DOCKER_REGISTRY-visionweb3foundation}/service-node-app:${EXTRA_TAG-local}
+    env_file:
+      - service-node-config.dev.env
     healthcheck:
-      test: ["CMD-SHELL", "set -a; . /etc/vision/eth-data/ETHEREUM.env && . /etc/vision/bnb-data/BNB_CHAIN.env; set +a; exec /usr/bin/vision-service-node-celery --status"]
+      test: ["CMD-SHELL", "ps aux | grep 'celery -A vision.servicenode worker' | grep -v grep > /dev/null || exit 1"]
       interval: 5s
       timeout: 10s
       retries: 3
@@ -85,6 +97,9 @@ services:
         - action: sync+restart
           path: service-node-config.docker.env
           target: /root/service-node-config.docker.env
+        - action: sync+restart
+          path: ./vision
+          target: ./vision
 
 volumes:
   bnb-data:

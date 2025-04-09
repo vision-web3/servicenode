@@ -173,8 +173,8 @@ services:
       retries: 5
     networks:
       vision-service-node:
-    ports:
-      - 5432:5432 # for alembic
+    # ports:
+    #   - 5432:5432 # for alembic
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres

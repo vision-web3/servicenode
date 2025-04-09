@@ -254,8 +254,8 @@ docker-build:
 		docker buildx bake -f docker-compose.yml --load $(ARGS); \
 	fi
 
-.PHONY: docker
-docker: check-swarm-init docker-build
+.PHONY: docker-dev
+docker-dev: check-swarm-init
 	@for i in $$(seq 1 $(INSTANCE_COUNT)); do \
         ( \
         export STACK_NAME="${STACK_BASE_NAME}-${STACK_IDENTIFIER}-$$i"; \
@@ -270,6 +270,33 @@ docker: check-swarm-init docker-build
         else \
             export ARGS="--detach --wait $(ARGS)"; \
             docker compose -f docker-compose.yml -f docker-compose.override.yml -p $$STACK_NAME $$EXTRA_COMPOSE up $$ARGS; \
+        fi; \
+        trap 'exit 1' INT; \
+        echo "Stack $$STACK_NAME deployed"; \
+        if [ "$(DEV_MODE)" = "true" ]; then \
+            wait $$COMPOSE_PID; \
+        fi; \
+        ) & \
+    done; \
+    trap 'echo "Caught INT, killing all background processes..."; kill 0; exit 1' INT; \
+    wait
+
+.PHONY: docker
+docker: check-swarm-init docker-build
+	@for i in $$(seq 1 $(INSTANCE_COUNT)); do \
+        ( \
+        export STACK_NAME="${STACK_BASE_NAME}-${STACK_IDENTIFIER}-$$i"; \
+        export INSTANCE=$$i; \
+        echo "Deploying stack $$STACK_NAME"; \
+        if [ "$(DEV_MODE)" = "true" ]; then \
+            echo "Running in development mode"; \
+            export ARGS="$(ARGS) --watch"; \
+            docker compose -f docker-compose.yml -p $$STACK_NAME $$EXTRA_COMPOSE up $$ARGS & \
+            COMPOSE_PID=$$!; \
+            trap 'echo "Caught INT, killing background processes..."; kill $$COMPOSE_PID; exit 1' INT; \
+        else \
+            export ARGS="--detach --wait $(ARGS)"; \
+            docker compose -f docker-compose.yml -p $$STACK_NAME $$EXTRA_COMPOSE up $$ARGS; \
         fi; \
         trap 'exit 1' INT; \
         echo "Stack $$STACK_NAME deployed"; \

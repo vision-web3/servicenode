@@ -70,3 +70,55 @@ ENTRYPOINT ["/usr/bin/vision-service-node-server"]
 FROM prod AS servicenode-celery-worker
 
 ENTRYPOINT ["/usr/bin/vision-service-node-celery"]
+
+# === DEV DOCKER CONTAINER ===
+# This container is used for development and testing purposes.
+
+FROM python:3.13-bookworm AS dev
+
+RUN pip install 'poetry<2.0.0'
+
+ENV POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_IN_PROJECT=1 \
+    POETRY_VIRTUALENVS_CREATE=1 \
+    POETRY_CACHE_DIR=/tmp/poetry_cache
+
+WORKDIR /app
+
+COPY pyproject.toml poetry.lock ./
+
+RUN poetry install --without dev --no-root && rm -rf $POETRY_CACHE_DIR
+
+FROM python:3.13-bookworm as runtime
+
+RUN adduser vision-servicenode \
+    --disabled-password
+
+ENV VIRTUAL_ENV=/app/.venv \
+    PATH="/app/.venv/bin:$PATH"
+
+RUN apt update && apt upgrade -y && apt install -y python3-psycopg2 && rm -rf /var/lib/apt/lists/*
+
+USER vision-servicenode
+
+COPY --from=dev ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+
+COPY --chown=vision-servicenode:vision-servicenode vision ./vision
+
+COPY --chown=vision-servicenode:vision-servicenode alembic.ini alembic.ini
+COPY --chown=vision-servicenode:vision-servicenode service-node-config.yml /etc/service-node-config.yml
+COPY --chown=vision-servicenode:vision-servicenode alembic.ini /opt/vision/vision-service-node/alembic.ini
+COPY --chown=vision-servicenode:vision-servicenode ./signer_key.pem /etc/vision/service-node-signer.pem
+
+FROM runtime AS servicenode-dev
+
+EXPOSE 8080
+COPY --chown=vision-servicenode:vision-servicenode vision-service-node-dev-entrypoint.sh /usr/bin/vision-service-node-dev-entrypoint.sh
+RUN chmod +x /usr/bin/vision-service-node-dev-entrypoint.sh
+ENTRYPOINT ["/usr/bin/vision-service-node-dev-entrypoint.sh"]
+
+FROM runtime AS servicenode-worker-dev
+COPY --chown=vision-servicenode:vision-servicenode vision-service-node-worker.sh /usr/bin/vision-service-node-worker.sh
+COPY bids.yml /etc/vision/service-node-bids.yml
+RUN chmod +x /usr/bin/vision-service-node-worker.sh
+ENTRYPOINT ["/usr/bin/vision-service-node-worker.sh"]
