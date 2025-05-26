@@ -119,10 +119,17 @@ def initialize_package(is_flask_app: bool = False) -> None:
                         or max_blockchain_id < blockchain.value):
                     session.add(
                         Blockchain_(id=blockchain.value, name=blockchain.name))
+
+            statement = sqlalchemy.select(
+                sqlalchemy.func.max(BlockchainType_.id))
+            max_blockchain_type_id = session.execute(
+                statement).scalar_one_or_none()
             for blockchain_type in sorted(BlockchainType):
-                session.add(
-                    BlockchainType_(id=blockchain_type.value,
-                                    name=blockchain_type.name))
+                if (max_blockchain_type_id is None
+                        or max_blockchain_type_id < blockchain_type.value):
+                    session.add(
+                        BlockchainType_(id=blockchain_type.value,
+                                        name=blockchain_type.name))
             # Transfer status table
             statement = sqlalchemy.select(
                 sqlalchemy.func.max(TransferStatus_.id))

@@ -186,6 +186,20 @@ make openapi-docs OUTPUT_FILE=<path>/<filename.json>
 
 ### 3.3 Local development environment
 
+#### Docker Compose
+
+If you want to run the service node app and worker locally while developing
+you can run `DEV_MODE=true make docker-dev`.
+
+It will start a docker compose stack, with Postgres, RabbitMq, Service Node App
+in Flask dev mode and Service Node Worker.
+
+Any changes in the `vision` directory are synced with the docker container
+and the app is restarted automatically.
+
+If you want to make sure that the Docker image is build before starting the
+stack, you can use: `DEV_MODE=true make ARGS=--build docker-dev`.
+
 #### PostgreSQL
 
 Launch the PostgreSQL interactive terminal:

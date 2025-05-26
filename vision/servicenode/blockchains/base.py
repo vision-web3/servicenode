@@ -97,8 +97,9 @@ class BlockchainClient(BlockchainHandler, ErrorCreator[BlockchainClientError]):
                 config['protocol'])
         assert is_supported_protocol_version(self.protocol_version)
         blockchain_node_url = self._get_config()['provider']
-        fallback_blockchain_nodes_urls = self._get_config().get(
-            'fallback_providers', [])
+        fallback_blockchain_nodes_urls: typing.List[str] = list(
+            filter(None,
+                   self._get_config().get('fallback_providers', [])))
         average_block_time = self._get_config()['average_block_time']
         required_transaction_confirmations = \
             self._get_config()['confirmations']
